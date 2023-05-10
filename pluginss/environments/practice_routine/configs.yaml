@@ -1,0 +1,6 @@
+---
+name: practice_routine
+version: "0.1"
+dependencies:
+  - numpy
+  - badger-opt

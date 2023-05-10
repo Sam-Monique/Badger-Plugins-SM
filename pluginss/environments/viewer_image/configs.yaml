@@ -1,0 +1,8 @@
+---
+name: viewer_image
+version: "0.1"
+dependencies:
+  - badger-opt
+  - subprocess
+interface:
+  - epics

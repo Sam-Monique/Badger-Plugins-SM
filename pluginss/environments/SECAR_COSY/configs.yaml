@@ -1,0 +1,7 @@
+---
+name: SECAR_COSY
+version: "0.1"
+dependencies:
+  - badger-opt
+interface:
+  - cosy

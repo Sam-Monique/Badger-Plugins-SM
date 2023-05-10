@@ -1,0 +1,7 @@
+---
+name: SECAR_LIN_COMB
+version: "0.1"
+dependencies:
+  - badger-opt
+interface:
+  - epics

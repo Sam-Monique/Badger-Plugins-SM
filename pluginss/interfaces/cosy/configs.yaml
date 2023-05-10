@@ -1,0 +1,6 @@
+---
+name: cosy
+version: "0.1"
+dependencies:
+  - badger-opt
+  - cosy_run
