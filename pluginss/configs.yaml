@@ -1,16 +1,16 @@
-Q3:
+q3:
   range:
     - 0.9
     - 1.1
   initial:
       1.0
-Q4:
+q4:
   range:
     - 0.9
     - 1.1
   initial: 
       1.0
-Q5:
+q5:
   range:
     - 0.9
     - 1.1

@@ -151,10 +151,8 @@ def set_rays(path,file):
 
 
 def run(path,file):
-	
-	subprocess.run(['powershell','-Command','cosy '+ path + file + 'TEMP.fox'])
-	# subprocess.run(['cosy '],[ path + file + 'TEMP.fox'])
-
+	subprocess.run(['powershell','-Command','cosy ' + path + file + 'TEMP'])
+	#subprocess.run(['cosy '],[ path + file + 'TEMP'])
 
 
 

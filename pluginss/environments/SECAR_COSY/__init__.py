@@ -36,11 +36,11 @@ class Environment(environment.Environment):
     def __init__(self, interface: Interface, params):
         super().__init__(interface, params)
 
-        same = True
+        same = False
         if same:
             self.interface.path = os.getcwd() + '/'
         else:
-            self.interface.path = '/Users/sam/Documents/GitHub/Badger-Plugins/'
+            self.interface.path = '/Users/sam/Documents/GitHub/Badger-Plugins-SM/pluginss/'
 
         self.interface.file = 'SECAR_GammaOptics'
         
