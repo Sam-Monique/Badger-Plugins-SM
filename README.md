@@ -15,19 +15,19 @@ To list all of the configuration keys. Use the command `badger config`. To then 
 
 | Command | Description |
 | --- | ---- |
-| badger | gives badger metadata, run this initially to configure badger |
-| badger -ga | Launches badger GUI |
-| badger algo | lists installed algorithms |
-| badger algo ALGO | get configs of an algorithm |
-|badger env | lists installed badger environments |
-| badger env ENV | get configs of an environment | 
-| badger routine | lists all routines |
-| badger routine ROUTINE | gives details of a routine |
-|badger run  -a ALGO_NAME [-ap ALGO_PARAMS] -e ENV_NAME [-ep ENV_PARAMS] -c ROUTINE_CONFIG [-s SAVE_NAME] -y [-v [{0,1,2}]]  | runs and saves a new routine |
-| badger routine ROUTINE -r -y | Runs a saved routine |
-| badger -h | badger help |
-| badger config | list all configurations |
-| badger config KEY | config KEY in the configuration list |
+| `badger` | gives badger metadata, run this initially to configure badger |
+| `badger -ga` | Launches badger GUI |
+| `badger algo` | lists installed algorithms |
+| `badger algo ALGO` | get configs of an algorithm |
+| `badger env` | lists installed badger environments |
+| `badger env ENV` | get configs of an environment | 
+| `badger routine` | lists all routines |
+| `badger routine ROUTINE` | gives details of a routine |
+| `badger run  -a ALGO_NAME [-ap ALGO_PARAMS] -e ENV_NAME [-ep ENV_PARAMS] -c ROUTINE_CONFIG [-s SAVE_NAME] -y [-v [{0,1,2}]]`  | runs and saves a new routine |
+| `badger routine ROUTINE -r -y` | Runs a saved routine |
+| `badger -h` | badger help |
+| `badger config` | list all configurations |
+| `badger config KEY` | config KEY in the configuration list |
 
 For the command `badger run`. `-ap` and `-ep` are optional and only change preexisting parameters. `-y` runs the routine without asking for confirmation, and `-v` is the verbose level
 
@@ -62,6 +62,14 @@ Examples of these are within the plugin directory
 
 ### Setting Up and Environment
 
-In the `__init__.py` file we have to substaintiate and subclass that includes the methods we need to define our optimization problem. In the `configs.yaml` for the Environment, it is important to note that if you are using an interface, it needs to specfied within this configuration file. 
+In the `__init__.py` file, we have to substaintiate a subclass that includes the methods we need to define our optimization problem. In the `configs.yaml` for the Environment, it is important to note that if you are using an interface, it needs to specfied within this configuration file. 
+
+Let's discuss some of the methods used in the `__init__.py` file. In the `__init__` method, it is typically useful if you are doing an analytical problem, to make a dictionary with keys and initial values. If using an interface, usually there is some way to set up what the pv's are or how the variables you define interact with the environment. The `list_vars` and `list_obese` are needed just to return a list of the names of each of the variables and objectives respectively. In the `get_default_parameters`, we set up our default parameters, usually None, but in a case where we want to change a value for an individual routine, it can be very useful. We can call these values by using the keys with the dictionary `self.params`. For the method `_get_vrange`, we set the variable ranges, we can either set the same variable range for all variables, or use a dictionary to set different ranges for each variable, if this method is not defined, it is defaulted to a variable range of [0,1]. The `_get_var` and `_set_var` is where we define how to get the current value of a variable and how we set a variable, either through a dictionary or a pv. Where most of the work is done in defining an environment, there is the `_get_obs`. This is where we define what the different objectives are that will be optimized. Using just those methods, we can create an environment. For the sake of simplicity, it is easiest just to copy the outline of this type of file from one of the examples.
+
+### Creating an Interface
+
+You may not have to set up an interface with Badger because most likely, it already exist. There already exists an interface for epics with badger, and I have made an interface that interacts with COSY. It is still however useful to know how to create one; compared to creating an algorithm it is much simpler. It only requires three methods, `get_default_params`, similar to before. As well as `get_value` and `set_value` where you define how to get and set a value based of a channel or variable name. All this does is prevents one having to rewrite how to set and get values from external machines. 
 
 ## How to Run a Routine
+
+It is first necessary to explain what a routine means in Badger. 
