@@ -11,6 +11,9 @@ make three new directories in a prefered spot. These are just to save informatio
 
 To list all of the configuration keys. Use the command `badger config`. To then change a specfic key or path, use `badger config KEY`
 
+## General Description of Badger
+
+Badger uses a plugin system to run optimization routines. The user selects an algorithm, and environment, and some configuration, which variable to tweek and objectives to optimize. This is called a routine. You can save these routines in badger and run them again either in the command line or the GUI. 
 
 ## Brief Overview of Plugin Types
 
@@ -53,7 +56,13 @@ You may not have to set up an interface with Badger because most likely, it alre
 
 ## How to Run a Routine
 
-It is first necessary to explain what a routine means in Badger. 
+It is first necessary to explain what a routine means in Badger. A routine is where you pick what algorithm, what environment and the configuration. The configurations can either be passed in the command line as a `.yaml` file or selected in the GUI. The configuration consist of what variables you are tuning and their ranges, what objectives you are optimising, constraints put on certain objective, and what states you want to observe. How is this different that what you defined in the environment? This allows you to hand pick what variables you want for a specfic routine, or what objectives you want to match together. This again is about striking a balance between having the right amount of components in an environment. We can also change the algorithm paramters and the environment parameters when creating a routine. 
+
+### Running a Routine from the Command Line
+
+
+
+### Running a Routine in Badger's GUI
 
 ## Some Useful Commands
 
@@ -74,3 +83,11 @@ It is first necessary to explain what a routine means in Badger.
 | `badger config KEY` | config KEY in the configuration list |
 
 For the command `badger run`. `-ap` and `-ep` are optional and only change preexisting parameters. `-y` runs the routine without asking for confirmation, and `-v` is the verbose level
+
+## Helpful Links/ Other Repos
+
+[Badger Github](https://slac-ml.github.io/Badger/)
+
+[Documentation](https://slac-ml.github.io/Badger/docs)
+
+[Badger hands on session Github](https://github.com/SLAC-ML/Badger-Handson)
