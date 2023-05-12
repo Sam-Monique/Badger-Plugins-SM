@@ -11,25 +11,6 @@ make three new directories in a prefered spot. These are just to save informatio
 
 To list all of the configuration keys. Use the command `badger config`. To then change a specfic key or path, use `badger config KEY`
 
-## Some Useful Commands
-
-| Command | Description |
-| --- | ---- |
-| `badger` | gives badger metadata, run this initially to configure badger |
-| `badger -ga` | Launches badger GUI |
-| `badger algo` | lists installed algorithms |
-| `badger algo ALGO` | get configs of an algorithm |
-| `badger env` | lists installed badger environments |
-| `badger env ENV` | get configs of an environment | 
-| `badger routine` | lists all routines |
-| `badger routine ROUTINE` | gives details of a routine |
-| `badger run  -a ALGO_NAME [-ap ALGO_PARAMS] -e ENV_NAME [-ep ENV_PARAMS] -c ROUTINE_CONFIG [-s SAVE_NAME] -y [-v [{0,1,2}]]`  | runs and saves a new routine |
-| `badger routine ROUTINE -r -y` | Runs a saved routine |
-| `badger -h` | badger help |
-| `badger config` | list all configurations |
-| `badger config KEY` | config KEY in the configuration list |
-
-For the command `badger run`. `-ap` and `-ep` are optional and only change preexisting parameters. `-y` runs the routine without asking for confirmation, and `-v` is the verbose level
 
 ## Brief Overview of Plugin Types
 
@@ -73,3 +54,23 @@ You may not have to set up an interface with Badger because most likely, it alre
 ## How to Run a Routine
 
 It is first necessary to explain what a routine means in Badger. 
+
+## Some Useful Commands
+
+| Command | Description |
+| --- | ---- |
+| `badger` | gives badger metadata, run this initially to configure badger |
+| `badger -ga` | Launches badger GUI |
+| `badger algo` | lists installed algorithms |
+| `badger algo ALGO` | get configs of an algorithm |
+| `badger env` | lists installed badger environments |
+| `badger env ENV` | get configs of an environment | 
+| `badger routine` | lists all routines |
+| `badger routine ROUTINE` | gives details of a routine |
+| `badger run  -a ALGO_NAME [-ap ALGO_PARAMS] -e ENV_NAME [-ep ENV_PARAMS] -c ROUTINE_CONFIG [-s SAVE_NAME] -y [-v [{0,1,2}]]`  | runs and saves a new routine |
+| `badger routine ROUTINE -r -y` | Runs a saved routine |
+| `badger -h` | badger help |
+| `badger config` | list all configurations |
+| `badger config KEY` | config KEY in the configuration list |
+
+For the command `badger run`. `-ap` and `-ep` are optional and only change preexisting parameters. `-y` runs the routine without asking for confirmation, and `-v` is the verbose level
