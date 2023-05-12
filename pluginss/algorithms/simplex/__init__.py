@@ -37,10 +37,8 @@ def optimize(evaluate, params):
     def _evaluate(x):
         y, _, _, _ = evaluate(np.array(x).reshape(1, -1))
         y = y[0]
-
         return y
 
     res = sopt.fmin(_evaluate, x0, maxiter=max_iter,
                     maxfun=max_iter, xtol=xtol, initial_simplex=isim)
-
     return res

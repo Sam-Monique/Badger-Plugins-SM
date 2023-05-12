@@ -10,6 +10,7 @@ class Environment(environment.Environment):
     vranges = {
         'x1': [-4,1],
         'x2': [0,5],
+        'x3':[-2,2],
     }
 
     def __init__(self, interface: Interface, params):
@@ -17,17 +18,18 @@ class Environment(environment.Environment):
         self.variables = {
             'x1': 0,
             'x2': 0,
+            'x3':1.5,
         }
         with open(self.params['config'], "r") as stream:
             self.configs = yaml.safe_load(stream)
 
     @staticmethod
     def list_vars():
-        return ['x1','x2']
+        return ['x1','x2','x3']
     
     @staticmethod
     def list_obses():
-        return ['y1','y2','y3']
+        return ['y1','y2','y3','y4']
     
     @staticmethod
     def get_default_params():
@@ -45,6 +47,7 @@ class Environment(environment.Environment):
     def _get_obs(self, obs):
         x1 = self.variables['x1']
         x2 = self.variables['x2']
+        x3 = self.variables['x3']
 
         if obs == 'y1':
             return ((x1)**2+(x2)**2)**(1/2)
@@ -69,3 +72,7 @@ class Environment(environment.Environment):
                 print(dic[select]['range'])
 
             return 0
+
+        elif obs == 'y4':
+            return x3**2
+
