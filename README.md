@@ -49,12 +49,12 @@ Interfaces allow for easy code reuse when interacting with an external machine w
 
 First off, for any plugin there needs to be a specfic file structure. In the directory that is the plugin roots. The file structure would look like this. Where this directory is within the respective plugin type folder.
 
-`
+```
 | --<PLUGIN_ID>
     |-- __init.py__
     |-- configs.yaml
     |-- README.md 
-`
+```
 
 Examples of these are within the plugin directory
 
