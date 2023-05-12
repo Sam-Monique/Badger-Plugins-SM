@@ -1,5 +1,7 @@
 # A collection of Badger Plugins and Intructions made by Sam for SECAR and COSY 
 
+# In PROGRESSSS
+
 ## Setting Up Badger 
 
 First we need to install badger using `pip install badger-opt`. There are other ways to download or setup a badger enviroment in the links below.
@@ -9,7 +11,7 @@ Then, we need some plugins. We can either clone this repo and use the plugin dir
 Once badger is installed and a pathway is set. Type the command `badger` into your terminal. This will prompt you to set some paths. For the database, logbook, and archive roots,
 make three new directories in a prefered spot. These are just to save information about routines that have been run. The plugin root needs to be the directory above, or another directory with plugins. 
 
-To list all of the configuration keys. Use the command `badger config`. To then change a specfic key or path, use `badger config KEY`
+To list all of the configuration keys. Use the command `badger config`. To then change a specfic key or path, use `badger config KEY`, and follow the prompts.
 
 ## General Description of Badger
 
@@ -48,17 +50,18 @@ Examples of these are within the plugin directory
 
 In the `__init__.py` file, we have to substaintiate a subclass that includes the methods we need to define our optimization problem. In the `configs.yaml` for the Environment, it is important to note that if you are using an interface, it needs to specfied within this configuration file. 
 
-Let's discuss some of the methods used in the `__init__.py` file. In the `__init__` method, it is typically useful if you are doing an analytical problem, to make a dictionary with keys and initial values. If using an interface, usually there is some way to set up what the pv's are or how the variables you define interact with the environment. The `list_vars` and `list_obese` are needed just to return a list of the names of each of the variables and objectives respectively. In the `get_default_parameters`, we set up our default parameters, usually None, but in a case where we want to change a value for an individual routine, it can be very useful. We can call these values by using the keys with the dictionary `self.params`. For the method `_get_vrange`, we set the variable ranges, we can either set the same variable range for all variables, or use a dictionary to set different ranges for each variable, if this method is not defined, it is defaulted to a variable range of [0,1]. The `_get_var` and `_set_var` is where we define how to get the current value of a variable and how we set a variable, either through a dictionary or a pv. Where most of the work is done in defining an environment, there is the `_get_obs`. This is where we define what the different objectives are that will be optimized. Using just those methods, we can create an environment. For the sake of simplicity, it is easiest just to copy the outline of this type of file from one of the examples.
+Let's discuss some of the methods used in the `__init__.py` file. In the `__init__` method, it is typically useful if you are doing an analytical problem, to make a dictionary with keys and initial values. If using an interface, usually there is some way to set up what the pv's are or how the variables you define interact with the environment. The `list_vars` and `list_obese` are needed just to return a list of the names of each of the variables and objectives respectively. In the `get_default_parameters`, we set up our default parameters, usually None, but in a case where we want to change a value for an individual routine, it can be very useful. We can call these values by using the keys with the dictionary `self.params`. For the method `_get_vrange`, we set the variable ranges, we can either set the same variable range for all variables, or use a dictionary to set different ranges for each variable, if this method is not defined, it is defaulted to a variable range of [0,1]. The `_get_var` and `_set_var` is where we define how to get the current value of a variable and how we set a variable, either through a dictionary or a pv. Where most of the work is done in defining an environment, there is the `_get_obs`. This is where we define what the different objectives are that will be optimized. Using just those methods, we can create an environment. For the sake of simplicity, it is easiest just to copy the outline of this type of file from one of the examples. See documentation about a more in depth walkthrough of creating an environment. 
 
 ### Creating an Interface
 
-You may not have to set up an interface with Badger because most likely, it already exist. There already exists an interface for epics with badger, and I have made an interface that interacts with COSY. It is still however useful to know how to create one; compared to creating an algorithm it is much simpler. It only requires three methods, `get_default_params`, similar to before. As well as `get_value` and `set_value` where you define how to get and set a value based of a channel or variable name. All this does is prevents one having to rewrite how to set and get values from external machines. 
+You may not have to set up an interface with Badger because most likely, it already exist. There already exists an interface for epics with badger, and I have made an interface that interacts with COSY. It is still however useful to know how to create one; compared to creating an algorithm it is much simpler. It only requires three methods, `get_default_params`, similar to before. As well as `get_value` and `set_value` where you define how to get and set a value based of a channel or variable name. To call these methods in an environment use `self.interface` and then the method. Again note the interface has to be specified in the configuration file for the environment. All this does is prevents one having to rewrite how to set and get values from external machines. 
 
 ## How to Run a Routine
 
 It is first necessary to explain what a routine means in Badger. A routine is where you pick what algorithm, what environment and the configuration. The configurations can either be passed in the command line as a `.yaml` file or selected in the GUI. The configuration consist of what variables you are tuning and their ranges, what objectives you are optimising, constraints put on certain objective, and what states you want to observe. How is this different that what you defined in the environment? This allows you to hand pick what variables you want for a specfic routine, or what objectives you want to match together. This again is about striking a balance between having the right amount of components in an environment. We can also change the algorithm paramters and the environment parameters when creating a routine. 
 
 ### Running a Routine from the Command Line
+
 
 
 
