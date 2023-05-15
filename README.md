@@ -4,13 +4,31 @@
 
 ## Setting Up Badger 
 
-First we need to install badger using `pip install badger-opt`. There are other ways to download or setup a badger enviroment in the links below.
+First we need to install badger using 
+
+```
+pip install badger-opt
+```
+
+ There are other ways to download or setup a badger enviroment in the links below.
 
 Then, we need some plugins. We can either clone this repo and use the plugin directory above, or we can find the plugins from some place else.
 
-Once badger is installed and a pathway is set. Type the command `badger` into your terminal. This will prompt you to set some paths. For the database, logbook, and archive roots, make three new directories in a prefered spot. These are just to save information about routines that have been run. The plugin root needs to be the directory above, or another directory with plugins. 
+Once badger is installed and a pathway is set. Type the command 
 
-To list all of the configuration keys. Use the command `badger config`. To then change a specfic key or path, use `badger config KEY`, and follow the prompts.
+```badger```
+
+ into your terminal. This will prompt you to set some paths. For the database, logbook, and archive roots, make three new directories in a prefered spot. These are just to save information about routines that have been run. The plugin root needs to be the directory above, or another directory with plugins. 
+
+To list all of the configuration keys. Use the command 
+
+```badger config```
+
+To then change a specfic key or path, use 
+
+```badger config KEY```
+
+ and follow the prompts.
 
 ## General Description of Badger
 
@@ -234,6 +252,13 @@ That is about all you need to know to be able to use Badger's GUI.
 #### Notes
 
 Badger's GUI has some flaws. When in the 'Routine Editor', be careful when scrolling because you can scroll throught the algorithms or environments and crash badger. Badger does not also like editing a routine, it is best if you are going to change a routine, give it a new name and save it that way, this will save some annoyance trying to delete the old routine in the side window and trying to name it the same thing. Sometimes it will change what's in the 'Rotuine Editor'. The GUI is useful, but for running multiple routines in a row, it can be best to run badger from the command line, or have a python script run the command.
+
+## Badger for SECAR
+
+
+## A COSY - Badger
+
+
 
 ## Some Useful Commands
 
