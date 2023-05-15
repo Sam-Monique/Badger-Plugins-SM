@@ -178,7 +178,7 @@ Note the other options for objective is `MAXIMIZE`. The other options for constr
 
 ### Running a Routine in Badger's GUI
 
-![image](\doc_images\badger_doc_1.png)
+![image](/doc_images/badger_doc_1.png)
 
 ## Some Useful Commands
 
