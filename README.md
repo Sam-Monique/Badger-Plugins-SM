@@ -173,10 +173,12 @@ states:
 ```
 We set `x1` from [-4.0,1.0], `x2` from [0.0,5.0]. Define an objective of minimizing `y1`. A constraint on `y2` of being less than 5. Observe the state of `y3`
 
-Note the other options for objective is `MAXIMIZE`. The other options for constraints is `EQUAL_TO` and `GREATER_THAN`.
+Note the other options for objective is `MAXIMIZE`. The other options for constraints are `EQUAL_TO` and `GREATER_THAN`.
 
 
 ### Running a Routine in Badger's GUI
+
+![image](\doc_images\badger_doc_1.png)
 
 ## Some Useful Commands
 
