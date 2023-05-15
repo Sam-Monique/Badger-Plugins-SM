@@ -9,7 +9,7 @@ class Environment(environment.Environment):
     def __init__(self, interface: Interface, params):
         super().__init__(interface, params)
         self.variables = {
-            'x1': self.params['INIT:x1'],
+            'x1':0,
         }
         self.eek = {
             'x2':0

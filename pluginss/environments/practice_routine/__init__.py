@@ -20,8 +20,7 @@ class Environment(environment.Environment):
             'x2': 0,
             'x3':1.5,
         }
-        with open(self.params['config'], "r") as stream:
-            self.configs = yaml.safe_load(stream)
+        
 
     @staticmethod
     def list_vars():
@@ -57,21 +56,7 @@ class Environment(environment.Environment):
 
         elif obs == 'y3':
             
-            dic = self.configs
-    
-
-
-            for i, key  in enumerate(dic.keys()):
-                none = list(dic.keys())
-                select = none.pop(i)
-            
-                for channel in none:
-                    print(channel)
-                    print(dic[channel]['initial'])
-                print(select)
-                print(dic[select]['range'])
-
-            return 0
+            return x1 - x3
 
         elif obs == 'y4':
             return x3**2

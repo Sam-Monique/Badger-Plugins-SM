@@ -178,7 +178,62 @@ Note the other options for objective is `MAXIMIZE`. The other options for constr
 
 ### Running a Routine in Badger's GUI
 
-![image](/doc_images/badger_doc_1.png)
+#### Instructions
+
+First, you need to open the GUI for badger. Use the command 
+
+```
+badger -ga
+```
+
+When you first open badger you will see something like this 
+
+![image](/doc_images/badgerdoc1.png)
+
+
+On the left side, it will be empty for now, but once you create and save a routine, they will appear there are you can search through them. On the right side, is the 'Run Monitor', this is where the results of a routine are displayed. To start creating a new routine, click on 'Routine Editor'. 
+
+![image](/doc_images/badgerdoc2.png)
+
+For the 'Metadata' section, all you need to do for now is give your routine a name. Usually badger provides a fun sounding animal name as a recommendation. 
+
+Next we need to choose an algorithm.
+
+![image](/doc_images/badgerdoc3.png)
+
+Use the drop down menu to select an algorithm. You can use the text box next to where it says 'Params' to change any hyperparameters. There is also an option to change the scaling.
+
+Next scroll down to the 'Environment + VOCS' tab
+
+![image](/doc_images/badgerdoc4.png)
+
+Again, use the drop down menu to select which environment you wish to choose. In the box next to 'Params', you can change the environment parameters. In the 'Vars' tab you can select which variable to tune and change their ranges. In the 'Objs' tab, you can select which objectives to optimize and whether they are to be minimzed or maximized. 
+
+![image](/doc_images/badgerdoc5.png)
+
+You can also set your constraints and states you'd like to observes.
+
+This part is the same as creating a configuration file except you use the GUI.
+
+You can then save the routine, make sure to save it with a unique name different than other routines. You are then brought back to the 'Run Monitor'.
+
+![image](/doc_images/badgerdoc6.png)
+
+Then press run to run the routine. While the routine is running, you have to option to pause it, then resume it. 
+
+![image](/doc_images/badgerdoc7.png)
+
+Once we have finished run, we can delete the run, logbook the run to the logbook directory, find the optimal solution, reset the variable back to their initial conditions, or set the variables to the optimal soultion. The values for each run were printed to the command line, but theyh are also visible through the run monitor if you drag up the bottom bar. 
+
+![image](/doc_images/badgerdoc8.png)
+
+Note that now in the left hand side, we can also see some of our other possible saved runs. 
+
+That is about all you need to know to be able to use Badger's GUI. 
+
+#### Notes
+
+Badger's GUI has some flaws. When in the 'Routine Editor', be careful when scrolling because you can scroll throught the algorithms or environments and crash badger. Badger does not also like editing a routine, it is best if you are going to change a routine, give it a new name and save it that way, this will save some annoyance trying to delete the old routine in the side window and trying to name it the same thing. Sometimes it will change what's in the 'Rotuine Editor'. The GUI is useful, but for running multiple routines in a row, it can be best to run badger from the command line, or have a python script run the command.
 
 ## Some Useful Commands
 
