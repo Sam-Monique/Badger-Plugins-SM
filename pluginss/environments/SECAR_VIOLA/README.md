@@ -90,3 +90,27 @@ This objective returns the difference between the postion on the viewer and an o
 `X_CENTRIOD`
 
 Although defined as an objective, this value is just the x centroid of the beam and is defined here so you can use it as a state and observe what it is for the initial quad configurations at each interation. This value at the optimal solution of mimized steering is what you would use as the optimal position for the `RETURN_POSITION` objective.
+
+## Quad Configuration File Instructions
+
+The file needs to have the extension `.yaml` and the path to the file needs to be specified as the `quad_config` environment parameter. An example of what this would look like
+```
+Q3:
+  range:
+    - 0.9
+    - 1.1
+  initial:
+      1.0
+Q4:
+  range:
+    - 0.9
+    - 1.1
+  initial: 
+      1.0
+Q5:
+  range:
+    - 0.9
+    - 1.1
+  initial: 
+      1.0
+```
