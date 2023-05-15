@@ -16,17 +16,23 @@ Then, we need some plugins. We can either clone this repo and use the plugin dir
 
 Once badger is installed and a pathway is set. Type the command 
 
-```badger```
+```
+badger
+```
 
  into your terminal. This will prompt you to set some paths. For the database, logbook, and archive roots, make three new directories in a prefered spot. These are just to save information about routines that have been run. The plugin root needs to be the directory above, or another directory with plugins. 
 
 To list all of the configuration keys. Use the command 
 
-```badger config```
+```
+badger config
+```
 
 To then change a specfic key or path, use 
 
-```badger config KEY```
+```
+badger config KEY
+```
 
  and follow the prompts.
 
