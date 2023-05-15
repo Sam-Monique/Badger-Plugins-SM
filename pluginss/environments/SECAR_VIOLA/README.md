@@ -1,4 +1,4 @@
-# Read me for SECAR Optimization of Steering
+# Documentation for SECAR Optimization of Steering
 
 This environment is built to mimimize the overall steering on SECAR by any combination of bending elements at any viewer position using a user selected combination of any quadruples. As well as return the center of the beam back to a current position.
 
@@ -65,9 +65,13 @@ In the GUI, changing these values is pretty straight forward, all you do is edit
 
 This notes any revelvant information or changes about any methods.
 
+`__init__()`
+
+In the init method, defined is a dictionary with shortened names as the keys and the values as the pv's of these values. Loaded in is the `quad_config` file. A dictionary is created to store the current value of the dipoles. The `initial_transmission` is set.
+
 `_set_var()`
 
-Note about this method, there is a condition in this method that if the set value is greater than that of the current, then the magnet is cycled using the method `CycleMagnet`
+Note about this method, there is a condition in this method that if the set value is greater than that of the current, then the magnet is cycled using the method `CycleMagnet()`
 
 `image_analysis()`
 

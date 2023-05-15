@@ -8,14 +8,13 @@ First we need to install badger using `pip install badger-opt`. There are other 
 
 Then, we need some plugins. We can either clone this repo and use the plugin directory above, or we can find the plugins from some place else.
 
-Once badger is installed and a pathway is set. Type the command `badger` into your terminal. This will prompt you to set some paths. For the database, logbook, and archive roots,
-make three new directories in a prefered spot. These are just to save information about routines that have been run. The plugin root needs to be the directory above, or another directory with plugins. 
+Once badger is installed and a pathway is set. Type the command `badger` into your terminal. This will prompt you to set some paths. For the database, logbook, and archive roots, make three new directories in a prefered spot. These are just to save information about routines that have been run. The plugin root needs to be the directory above, or another directory with plugins. 
 
 To list all of the configuration keys. Use the command `badger config`. To then change a specfic key or path, use `badger config KEY`, and follow the prompts.
 
 ## General Description of Badger
 
-Badger uses a plugin system to run optimization routines. The user selects an algorithm, and environment, and some configuration, which variable to tweek and objectives to optimize. This is called a routine. You can save these routines in badger and run them again either in the command line or the GUI. 
+Badger is a multidimensional optimizer. Badger uses a plugin system to run optimization routines. The user selects an algorithm, an environment, and some configuration, which variables to tweek and objectives to optimize. This is called a routine. You can save these routines in badger and run them again either in the command line or the GUI. Badger already comes with some algorithms already premade, all a user then needs to do is define an environment, described below. Badger is simple to use and offers interfaces to interact with external machines through channels such as using pyepics. 
 
 ## Brief Overview of Plugin Types
 
@@ -54,35 +53,35 @@ In the `__init__.py` file, we have to substaintiate a subclass that includes the
 
 Let's discuss some of the methods used in the `__init__.py` file.
 
- `__init__`
+ `__init__()`
  
 it is typically useful if you are doing an analytical problem, to make a dictionary with keys and initial values. If using an interface, usually there is some way to set up what the pv's are or how the variables you define interact with the environment.
 
-`list_vars`
+`list_vars()`
 
 A static method that return the variable names in a list
 
-`list_obese` 
+`list_obese()` 
 
 A static method that return the observation names in a list
 
-`get_default_parameters`
+`get_default_parameters()`
 
 Set up our default parameters, usually None, but in a case where we want to change a value for an individual routine, it can be very useful. We can call these values by using the keys with the dictionary `self.params`.
 
-`_get_vrange`
+`_get_vrange()`
 
 Set the variable ranges, can either set the same variable range for all variables, or use a dictionary to set different ranges for each variable, if this method is not defined, it is defaulted to a variable range of [0,1]. 
 
-`_get_var`
+`_get_var()`
 
 Method to define when given the name of a variable how to return its current value,either through a dictionary or a pv.
 
-`_set_var` 
+`_set_var()` 
 
 Method to define when given the name of a variable, and a new value how to set the new value, either through a dictionary or a pv.
 
-`_get_obs`. 
+`_get_obs()`. 
 
 This is how you define what the different objectives are that will be optimized. It should take in an objective name and return the value of that current objective. 
 
@@ -97,15 +96,15 @@ You may not have to set up an interface with Badger because most likely, it alre
 #### Interface Methods
 It only requires three methods,
 
-`get_default_params`
+`get_default_params()`
 
 Returns the default parameters of the interface, usually and defaulted to None
 
-`get_value`
+`get_value()`
 
 Takes in a channel name and returns the value of the pv
 
-`set_value` 
+`set_value()` 
 
 Takes in a channel name and a value and sets that channel to that value.
 
@@ -142,7 +141,7 @@ It is first necessary to explain what a routine means in Badger. A routine is wh
 
 For the command `badger run`. `-ap` and `-ep` are optional and only change preexisting parameters. `-y` runs the routine without asking for confirmation, and `-v` is the verbose level
 
-## Helpful Links/ Other Repos
+## Helpful Links / Other Repos
 
 [Badger Github](https://slac-ml.github.io/Badger/)
 
