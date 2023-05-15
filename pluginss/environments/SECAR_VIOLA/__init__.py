@@ -1,6 +1,6 @@
 from badger import environment
 from badger.interface import Interface
-from setup1 import CycleMagnet, SaveIm
+from setup import CycleMagnet, SaveIm
 import subprocess
 import numpy as np
 import yaml
@@ -57,17 +57,21 @@ class Environment(environment.Environment):
         self.intial_transmission = self.params['optional_transmission']
 
 
+
     @staticmethod
     def list_vars():
         return['b1','b2','b3','b4','b5','b6','b7','b8']
     
     @staticmethod
     def list_obses():
-        return['STEERING', 'RETURN_POSITION']
+        return['STEERING', 'RETURN_POSITION', 'X_CENTROID']
 
     @staticmethod
     def get_default_params():
-        return {'tunename':'','quad_config':'', 'viola_loc':'', 'viewer':'', 'optimal_viewer_position':0.0, 'viewer_size':0.0, 'optional_transmision':0.0}
+        return {'tunename':'','quad_config':'','viewer':'',
+                 'optimal_viewer_position':0.0, 'viewer_size':0.0,
+                   'optional_transmission':0.0, 'transmission_tolerance':0.60,
+                   }
     
     def _get_vrange(self, var):
         return self.vranges[var]
@@ -101,14 +105,15 @@ class Environment(environment.Environment):
             val = (optimal_x_position - current_x_position)**2
             return val
             
-
+        elif obs == 'X_CENTROID':
+            current_x_position, _, _, _, _, _ = self.image_analysis()
+            return current_x_position
         
 
         
     def image_analysis(self):
-        time.sleep(3)
-        subprocess.run(f"python badger_viola.py {self.params['viola_loc']}")
-        array_info = np.loadtxt()
+        time.sleep(3)  # consider changing this delay based on how long it actually takes, better to slighlty overestimate
+        array_info = np.loadtxt('/user/e20008/sam/badger_viola/viola.txt')
         return array_info
     
     def steer(self):
@@ -119,7 +124,7 @@ class Environment(environment.Environment):
         viewer = self.params['viewer']
         viewer_size = self.params['viewer_size']
         intial_transmission = self.intial_transmission
-        transmission_tolerance = 0.60
+        transmission_tolerance = self.params['transmission_tolerance']
 
 
 
@@ -133,7 +138,7 @@ class Environment(environment.Environment):
 
         total = 0
 
-        SaveIm(tunename, viewer)
+        SaveIm(f'{tunename}_INITIAL', viewer)
 
         for selected_quad in quad_dic.keys():
             
@@ -143,8 +148,11 @@ class Environment(environment.Environment):
             transmissions = []
 
             for strengths in quad_dic[selected_quad]['ranges']:
+
                 self.interface.set_value(selected_quad, strengths)
+
                 x, y, x_rms, y_rms, xy_col, total_count = self.image_analysis()
+                SaveIm(f'{tunename}_{selected_quad}_{strengths}',viewer)
 
                 x_positions.append(x)
                 transmissions.append(total_count)
