@@ -116,7 +116,64 @@ It is first necessary to explain what a routine means in Badger. A routine is wh
 
 ### Running a Routine from the Command Line
 
+To find routines that already exist. Use the command
 
+```
+badger routine
+```
+
+To then get details about the configurations of a routine use the command
+
+```
+badger rountine ROUTINE
+```
+
+where `ROUTINE` is the routine name
+
+Then to run that routine use the command
+
+```
+badger routine ROUTINE -r [-y] [-v [{0,1,2}]]
+```
+
+With the option of the -y to run it without confirmation and -v for the verbosity level.
+0 being not printing any values, 1 being printing the optimal solutions, and 2 being printing all interations
+ 
+To run and save a new routine use the command
+
+```
+`badger run  -a ALGO_NAME [-ap ALGO_PARAMS] -e ENV_NAME [-ep ENV_PARAMS] -c ROUTINE_CONFIG [-s SAVE_NAME] [-y] [-v [{0,1,2}]]
+```
+
+With ALGO_NAME and ENV_NAME the name of the specified algorithm and environment. ALGO_PARAMS and ENV_PARAMS being a dictionary like `"{"key":value}"` written into the command line. A routine configuration file which will be shown below. -s if you want to save with a name, and the other two flags
+
+#### Routine Configuration Files
+
+To run a new routine from the command line, you need to pass in a configuration file that determines the variables, objectives, constraints and states.
+
+An example woule look like this
+
+```
+variables:
+  - x1:
+    - -4.0
+    - 1.0
+  - x2:
+    - 0.0
+    - 5.0
+objectives:
+  - y1: MINIMIZE
+constraints:
+  - y2:
+    - LESS_THAN
+    - 5
+states:
+  - y3
+
+```
+We set `x1` from [-4.0,1.0], `x2` from [0.0,5.0]. Define an objective of minimizing `y1`. A constraint on `y2` of being less than 5. Observe the state of `y3`
+
+Note the other options for objective is `MAXIMIZE`. The other options for constraints is `EQUAL_TO` and `GREATER_THAN`.
 
 
 ### Running a Routine in Badger's GUI
@@ -133,13 +190,12 @@ It is first necessary to explain what a routine means in Badger. A routine is wh
 | `badger env ENV` | get configs of an environment | 
 | `badger routine` | lists all routines |
 | `badger routine ROUTINE` | gives details of a routine |
-| `badger run  -a ALGO_NAME [-ap ALGO_PARAMS] -e ENV_NAME [-ep ENV_PARAMS] -c ROUTINE_CONFIG [-s SAVE_NAME] -y [-v [{0,1,2}]]`  | runs and saves a new routine |
-| `badger routine ROUTINE -r -y` | Runs a saved routine |
+| `badger run  -a ALGO_NAME [-ap ALGO_PARAMS] -e ENV_NAME [-ep ENV_PARAMS] -c ROUTINE_CONFIG [-s SAVE_NAME] [-y] [-v [{0,1,2}]]`  | runs and saves a new routine |
+| `badger routine ROUTINE -r [-y]` | Runs a saved routine |
 | `badger -h` | badger help |
 | `badger config` | list all configurations |
 | `badger config KEY` | config KEY in the configuration list |
 
-For the command `badger run`. `-ap` and `-ep` are optional and only change preexisting parameters. `-y` runs the routine without asking for confirmation, and `-v` is the verbose level
 
 ## Helpful Links / Other Repos
 

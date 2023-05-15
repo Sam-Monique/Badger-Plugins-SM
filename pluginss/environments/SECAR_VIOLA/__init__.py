@@ -1,6 +1,6 @@
 from badger import environment
 from badger.interface import Interface
-from setup import CycleMagnet, SaveIm
+from .setup import CycleMagnet, SaveIm
 import subprocess
 import numpy as np
 import yaml
@@ -49,8 +49,7 @@ class Environment(environment.Environment):
             'b8':'SCR_BTS35:PSD_D1826:I_CSET',
 
         }
-        with open(self.params['quad_config'], "r") as stream:
-            self.configs = yaml.safe_load(stream)
+        self.configs = None
 
         self.variables = {}
 
@@ -117,6 +116,10 @@ class Environment(environment.Environment):
         return array_info
     
     def steer(self):
+
+        if self.configs == None:
+            with open(self.params['quad_config'], "r") as stream:
+                self.configs = yaml.safe_load(stream)
         
         
         quad_dic = self.configs

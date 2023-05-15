@@ -91,7 +91,7 @@ This returns the value given by the `steer()` method. The goal is to minimize th
 
 This objective returns the difference between the postion on the viewer and an optimal position selected by the user given by the environment parameters. The goal is to minimize this value to return the centriod of the beam back to a postion on the viewer, hence the name.
 
-`X_CENTRIOD`
+`X_CENTROID`
 
 Although defined as an objective, this value is just the x centroid of the beam and is defined here so you can use it as a state and observe what it is for the initial quad configurations at each interation. This value at the optimal solution of mimized steering is what you would use as the optimal position for the `RETURN_POSITION` objective.
 
