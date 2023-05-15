@@ -95,22 +95,24 @@ Although defined as an objective, this value is just the x centroid of the beam 
 
 The file needs to have the extension `.yaml` and the path to the file needs to be specified as the `quad_config` environment parameter. An example of what this would look like
 ```
-Q3:
+q3:
   range:
     - 0.9
     - 1.1
   initial:
       1.0
-Q4:
+q4:
   range:
     - 0.9
     - 1.1
   initial: 
       1.0
-Q5:
+q5:
   range:
     - 0.9
     - 1.1
   initial: 
       1.0
 ```
+
+You can add as many quads as you like. Note this example values are just multiples of current currents. User will need to select what this values are. 
