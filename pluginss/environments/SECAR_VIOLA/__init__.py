@@ -4,6 +4,7 @@ from .setup import CycleMagnet, SaveIm
 import subprocess
 import numpy as np
 import yaml
+import pandas as pd
 import time
 
 class Environment(environment.Environment):
@@ -68,7 +69,7 @@ class Environment(environment.Environment):
     @staticmethod
     def get_default_params():
         return {'tunename':'','quad_config':'','viewer':'',
-                 'optimal_viewer_position':0.0, 'viewer_size':0.0,
+                 'optimal_viewer_position':[0,0], 'viewer_size':[0,0],
                    'optional_transmission':0.0, 'transmission_tolerance':0.60,
                    }
     
@@ -100,9 +101,9 @@ class Environment(environment.Environment):
             return val
         
         elif obs == 'RETURN_POSTION':
-            optimal_x_position = self.params['viewer_position']
-            current_x_position, _, _, _, _, _ = self.image_analysis()
-            val = (optimal_x_position - current_x_position)**2
+            optimal_x, optimal_y = self.params['viewer_position']
+            x, y, _, _, _, _ = self.image_analysis()
+            val = ((optimal_x - x)**2 + (optimal_y - y)**2)**(1/2)
             return val
             
         elif obs == 'X_CENTROID':
@@ -110,72 +111,130 @@ class Environment(environment.Environment):
             return current_x_position
         
 
-        
+    def set_quads(self, quad_names, quad_values):
+        for channel, value in quad_names, quad_values:
+            self.interface.set_value(channel,value)
+
     def image_analysis(self):
         '''Read in Viewer Image Info From Text File'''
-        time.sleep(3)  # consider changing this delay based on how long it actually takes, better to slighlty overestimate
+        time.sleep(15)  # consider changing this delay based on how long it actually takes, better to slighlty overestimate
         array_info = np.loadtxt('/user/e20008/sam/badger_viola/viola.txt')
         return array_info
     
-    def steer(self):
+    # def steer(self):
 
-        '''Quantifies Steering with a Combination of Quads and Values'''
+    #     '''Quantifies Steering with a Combination of Quads and Values'''
 
-        if self.configs == None:
-            with open(self.params['quad_config'], "r") as stream:
-                self.configs = yaml.safe_load(stream)
+    #     if self.configs == None:
+    #         with open(self.params['quad_config'], "r") as stream:
+    #             self.configs = yaml.safe_load(stream)
         
         
-        quad_dic = self.configs
-        tunename = self.params['tunename']
-        viewer = self.params['viewer']
-        viewer_size = self.params['viewer_size']
-        intial_transmission = self.intial_transmission
-        transmission_tolerance = self.params['transmission_tolerance']
+    #     quad_dic = self.configs
+    #     tunename = self.params['tunename']
+    #     viewer = self.params['viewer']
+    #     viewer_size = self.params['viewer_size']
+    #     intial_transmission = self.intial_transmission
+    #     transmission_tolerance = self.params['transmission_tolerance']
 
 
 
-        for quad in quad_dic.keys():
-            self.interface.set_value(quad, quad_dic[quad]['initial'])
+    #     for quad in quad_dic.keys():
+    #         self.interface.set_value(quad, quad_dic[quad]['initial'])
 
-        if intial_transmission == 0:
-            _,_,_,_,_, total_counts = self.image_analysis()
-            intial_transmission = total_count
-            self.intial_transmission = total_count
+    #     if intial_transmission == 0:
+    #         _,_,_,_,_, total_counts = self.image_analysis()
+    #         intial_transmission = total_count
+    #         self.intial_transmission = total_count
 
-        total_steering = 0
+    #     total_steering = 0
 
-        SaveIm(f'{tunename}_INITIAL', viewer)
+    #     SaveIm(f'{tunename}_INITIAL', viewer)
 
-        for selected_quad in quad_dic.keys():
+    #     for selected_quad in quad_dic.keys():
             
              
 
-            x_positions = []
-            transmissions = []
+    #         x_positions = []
+    #         transmissions = []
 
-            for strengths in quad_dic[selected_quad]['ranges']:
+    #         for strengths in quad_dic[selected_quad]['ranges']:
 
-                self.interface.set_value(selected_quad, strengths)
+    #             self.interface.set_value(selected_quad, strengths)
 
-                x, y, x_rms, y_rms, xy_col, total_count = self.image_analysis()
-                SaveIm(f'{tunename}_{selected_quad}_{strengths}',viewer)
+    #             x, y, x_rms, y_rms, xy_col, total_count = self.image_analysis()
+    #             SaveIm(f'{tunename}_{selected_quad}_{strengths}',viewer)
 
-                x_positions.append(x)
-                transmissions.append(total_count)
+    #             x_positions.append(x)
+    #             transmissions.append(total_count)
 
-            x_diff = x_positions[1] - x_positions[0]
+    #         x_diff = x_positions[1] - x_positions[0]
 
 
-            if (transmissions[0])/(intial_transmission) < transmission_tolerance or (transmissions[1])/(intial_transmission) < transmission_tolerance:
+    #         if (transmissions[0])/(intial_transmission) < transmission_tolerance or (transmissions[1])/(intial_transmission) < transmission_tolerance:
 
-                x_diff = viewer_size
+    #             x_diff = viewer_size
 
-            total_steering += (x_diff)**2        
+    #         total_steering += (x_diff)**2        
             
 
             
-            self.interface.set_value(selected_quad, quad_dic[selected_quad]['initial'])
+    #         self.interface.set_value(selected_quad, quad_dic[selected_quad]['initial'])
+
+
+    #     return total_steering
+
+    def steer(self):
+
+        if self.configs == None:
+            self.configs = pd.read_csv(self.params['quad_config'])
+
+        quad_df = self.configs
+        tunename = self.params['tunename']
+        viewer = self.params['viewer']
+        viewer_size_x, viewer_size_y = self.params['viewer_size']
+        intial_transmission = self.intial_transmission
+        transmission_tolerance = self.params['transmission_tolerance']
+
+        if intial_transmission == 0:
+                _,_,_,_,_, total_counts = self.image_analysis()
+                intial_transmission = total_counts
+                self.intial_transmission = total_counts
+
+
+        quads = quad_df.keys()
+        quad_strengths = quad_df.values
+
+        x_positions = []
+        y_positions = []
+        transmission = []
+
+
+        for quad_values in quad_strengths:
+            self.set_quads(quads, quad_values)
+
+            x, y, x_rms, y_rms, xy_col, total_count = self.image_analysis()
+            SaveIm(f'{tunename}',viewer)
+
+            x_positions.append(x)
+            y_positions.append(y)
+
+            if total_count/intial_transmission < transmission_tolerance:
+                transmission.append[1]
+            else:
+                transmission.append[0]
+
+
+
+        total_steering = 0
+
+
+        for i in range(len(quad_strengths)):
+            for j in range(i+1, len(quad_strengths)):
+                if transmission[i] == 1 or transmission[j] == 1:
+                    total_steering += (viewer_size_x)**2 + (viewer_size_y)**2
+                else:
+                    total_steering += (x_positions[i] - x_positions[j])**2 + (y_positions[i] - y_positions[j])**2
 
 
         return total_steering
