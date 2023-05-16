@@ -87,7 +87,8 @@ class Environment(environment.Environment):
             current = x
 
         if x > current:
-            CycleMagnet(var)
+            wait_time = CycleMagnet(var)
+            time.sleep(wait_time)
 
         self.variables[var] = x
         self.interface.set_value(var,x)
@@ -111,11 +112,14 @@ class Environment(environment.Environment):
 
         
     def image_analysis(self):
+        '''Read in Viewer Image Info From Text File'''
         time.sleep(3)  # consider changing this delay based on how long it actually takes, better to slighlty overestimate
         array_info = np.loadtxt('/user/e20008/sam/badger_viola/viola.txt')
         return array_info
     
     def steer(self):
+
+        '''Quantifies Steering with a Combination of Quads and Values'''
 
         if self.configs == None:
             with open(self.params['quad_config'], "r") as stream:
@@ -139,7 +143,7 @@ class Environment(environment.Environment):
             intial_transmission = total_count
             self.intial_transmission = total_count
 
-        total = 0
+        total_steering = 0
 
         SaveIm(f'{tunename}_INITIAL', viewer)
 
@@ -167,12 +171,12 @@ class Environment(environment.Environment):
 
                 x_diff = viewer_size
 
-            total += (x_diff)**2        
+            total_steering += (x_diff)**2        
             
 
             
             self.interface.set_value(selected_quad, quad_dic[selected_quad]['initial'])
 
 
-        return total
+        return total_steering
 

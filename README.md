@@ -261,8 +261,9 @@ Badger's GUI has some flaws. When in the 'Routine Editor', be careful when scrol
 
 ## Badger for SECAR
 
+In this repository, there are a few environmental plugins for SECAR. As of now, the main one used to optimize the steerers is named `SECAR_VIOLA`. In its folder is a README file that contains the relevant information on how to use that environment. In the future, there will be an environment with the goal of optimizing multiple objectives, such as maximizing intensity or minimizing beam spot size, using a linear combination of quads based off the PCA. This would require integrating Faraday Cups into badger. 
 
-## A COSY - Badger
+## A Very COSY - Badger
 
 
 
