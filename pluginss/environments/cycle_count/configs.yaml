@@ -1,0 +1,6 @@
+---
+name: cycle_count
+version: "0.1"
+dependencies:
+  - numpy
+  - badger-opt
