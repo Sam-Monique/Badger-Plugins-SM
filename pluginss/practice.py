@@ -1,12 +1,4 @@
-import pandas as pd
+import numpy as np
 
-# df = pd.read_csv('pluginss\pracitce.csv')
-
-# for e in df.values:
-#     print(e)
-
-b = 1
-
-b+= 1+1
-
-print(b)
+x = np.array([1,2,3]).reshape(-1,1)
+print(x)
