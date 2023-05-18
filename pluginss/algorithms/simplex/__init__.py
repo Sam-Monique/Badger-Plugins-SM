@@ -33,7 +33,7 @@ def optimize(evaluate, params):
             isim[i + 1] = x0 + vertex
 
     logging.debug(f'ISIM = {isim}')
-
+   
     def _evaluate(x):
         y, _, _, _ = evaluate(np.array(x).reshape(1, -1))
         y = y[0]

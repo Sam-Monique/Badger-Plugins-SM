@@ -22,7 +22,7 @@ def optimize(evaluate, params):
     pbounds = {}
     for i in range(D):
         pbounds[f'v{i}'] = (0, 1)
-
+        
     optimizer = BayesianOptimization(
         f=_evaluate,
         pbounds=pbounds,

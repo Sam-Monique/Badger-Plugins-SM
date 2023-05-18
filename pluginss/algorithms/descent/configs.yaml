@@ -1,0 +1,8 @@
+---
+name: descent
+version: "0.1"
+dependencies:
+params:
+  step_inital: 0.5 
+  max_iter: 100
+  min_step: 1.0e-5

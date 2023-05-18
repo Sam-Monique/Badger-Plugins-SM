@@ -23,5 +23,5 @@ def optimize(evaluate, params):
 
         pf.is_dominated((x, y))
     # print(len(pf.pareto_front) / max_iter)
-
+    
     return pf.pareto_front, pf.pareto_set
