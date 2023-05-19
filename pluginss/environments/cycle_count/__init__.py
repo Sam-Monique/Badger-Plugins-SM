@@ -47,6 +47,6 @@ class Environment(environment.Environment):
 
 
         if obs == 'y1': 
-            return x1**2
+            return x1**6 + x1**3 + np.sin(x1)
            
 

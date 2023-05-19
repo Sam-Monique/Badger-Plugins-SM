@@ -5,7 +5,7 @@ def gradient_descent(f,x_bounds, x_initial, max_iter,step_initial,  min_step):
 
     step = step_initial
     x = x_initial
-    cycle_tally = 0
+
     for i in range(max_iter):
 
         if x - step >= x_bounds[0]:
@@ -13,8 +13,6 @@ def gradient_descent(f,x_bounds, x_initial, max_iter,step_initial,  min_step):
         else:
             x = x_bounds[0]
 
-        if x > inputs[i]:
-            cycle_tally += 1
 
         y = f(x)
 
@@ -25,7 +23,7 @@ def gradient_descent(f,x_bounds, x_initial, max_iter,step_initial,  min_step):
             if step < min_step:
                 break
             else:
-                x = inputs[i-1] + 2*step
+                x = inputs[i-1] + step
 
             if x > x_bounds[1]:
                 x = x_bounds[1]
