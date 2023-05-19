@@ -6,20 +6,22 @@ class Environment(environment.Environment):
     name = 'cycle_count'
 
     vranges = {
-        'x1': [-2,2],
+        'x1': [0,2],
+        'x2':[-2,2]
     }
 
     def __init__(self, interface: Interface, params):
         super().__init__(interface, params)
         self.variables = {
             'x1': 2,
+            'x2': 2
         }
         self.cycle = 0
         
 
     @staticmethod
     def list_vars():
-        return ['x1']
+        return ['x1','x2']
     
     @staticmethod
     def list_obses():
@@ -44,9 +46,11 @@ class Environment(environment.Environment):
     
     def _get_obs(self, obs):
         x1 = self.variables['x1']
+        x2 = self.variables['x2']
 
 
         if obs == 'y1': 
-            return x1**6 + x1**3 + np.sin(x1)
+            return x1**6 - np.sin(x1)
+            # return x1**6 + x1**3 + np.sin(x1) + x2
            
 

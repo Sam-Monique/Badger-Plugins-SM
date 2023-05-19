@@ -16,7 +16,7 @@ def optimize(evaluate, params):
     
     x_bounds = (0,1)
     x_initial = x0[0,0]
-    
+
     gradient_descent(_evaluate, x_bounds,x_initial, max_iter, step_inital, min_step)
 
 
