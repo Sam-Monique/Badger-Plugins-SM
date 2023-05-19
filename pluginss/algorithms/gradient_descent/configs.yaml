@@ -1,0 +1,9 @@
+---
+name: gradient_descent
+version: "0.1"
+dependencies:
+params:
+  learn_rate: 0.1
+  max_iter: 100
+  tol: 0.01
+  gradient_step: 0.001
