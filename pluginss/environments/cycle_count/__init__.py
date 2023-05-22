@@ -13,7 +13,7 @@ class Environment(environment.Environment):
     def __init__(self, interface: Interface, params):
         super().__init__(interface, params)
         self.variables = {
-            'x1': 2,
+            'x1': -1.5,
             'x2': 2
         }
         self.cycle = 0

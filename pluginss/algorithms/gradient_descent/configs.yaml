@@ -2,8 +2,9 @@
 name: gradient_descent
 version: "0.1"
 dependencies:
+  - numpy
 params:
-  learn_rate: 0.1
+  learn_rate: 0.01
   max_iter: 100
-  tol: 0.01
-  gradient_step: 0.001
+  tol: 1.0e-5
+  gradient_step: 1.0e-6

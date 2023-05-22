@@ -20,6 +20,10 @@ def gradient_descent(start,f,  gradient, learn_rate, max_iter, tol=0.01):
             gradient_val , y_new = gradient(y_new, x,i)
             diff[i] = -learn_rate*gradient_val
 
+            if diff[i] < -0.5 or diff[i] > 0.5:
+                learn_rate = np.abs(0.25/gradient_val)
+                diff[i] = np.sign(0.25)
+
             function_evals += 1
 
     
