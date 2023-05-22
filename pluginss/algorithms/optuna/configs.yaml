@@ -1,0 +1,9 @@
+---
+name: optuna
+version: "0.1"
+dependencies:
+  - numpy
+  - optuna
+params:
+  max_iter: 100
+

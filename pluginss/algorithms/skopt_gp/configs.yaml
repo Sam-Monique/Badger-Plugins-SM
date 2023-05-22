@@ -1,0 +1,8 @@
+---
+name: skopt_gp
+version: "0.1"
+dependencies:
+  - numpy
+  - skopt
+params:
+  max_iter: 100
