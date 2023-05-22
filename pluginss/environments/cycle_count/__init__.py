@@ -6,8 +6,8 @@ class Environment(environment.Environment):
     name = 'cycle_count'
 
     vranges = {
-        'x1': [0,2],
-        'x2':[0,2]
+        'x1': [-2,2],
+        'x2':[-2,2]
     }
 
     def __init__(self, interface: Interface, params):
@@ -50,7 +50,7 @@ class Environment(environment.Environment):
 
 
         if obs == 'y1': 
-            return x1**2 + x2**3 #**6 - np.sin(x1)
+            return x1**2 - np.sin(x1) + x2**2 + 2*np.sin(x2)
             # return x1**6 + x1**3 + np.sin(x1) + x2
            
 
