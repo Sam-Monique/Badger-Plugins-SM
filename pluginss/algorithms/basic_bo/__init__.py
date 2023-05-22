@@ -28,6 +28,7 @@ def optimize(evaluate, params):
         pbounds=pbounds,
         random_state=random_state,
         verbose=0,
+        allow_duplicate_points= True
     )
 
     _init_points = init_points

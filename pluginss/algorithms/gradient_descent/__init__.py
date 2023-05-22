@@ -15,17 +15,20 @@ def optimize(evaluate, params):
         return y
     
     x_bounds = (0,1)
-    x_initial = x0[0,0]
+    x_initial = x0[0]
+    print(x_initial)
 
-    def gradient(y,x):
-        
-        y_step = _evaluate(x-gradient_step)
-        print(f'x: {x}')
-        print(F'Function at x - gradient:{x- gradient_step}')
+    def gradient(y,x, i):
+
+        x[i] = x[i] - gradient_step
+        print()
+        y_step = _evaluate(x)
+
+        print(F'Function at x - gradient:{x}')
 
         val = (y -y_step)/(gradient_step)
         print(f"gradient: {val}")
-        return val
+        return val, y_step
 
     gradient_descent(x_initial,_evaluate, gradient, learn_rate, max_iter, tol=tol )
 
