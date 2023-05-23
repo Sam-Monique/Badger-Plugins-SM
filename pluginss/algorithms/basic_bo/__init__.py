@@ -16,7 +16,6 @@ def optimize(evaluate, params):
         Y, _, _, _ = evaluate(X)
 
         # BO assume a maximize problem
-        print(Y[0])
         return -Y[0, 0]
 
     # bounds on input params

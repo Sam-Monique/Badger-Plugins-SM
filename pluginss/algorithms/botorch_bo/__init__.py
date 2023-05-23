@@ -25,7 +25,7 @@ def optimize(evaluate, params):
     if start_from_current:
         initial_pts[0] = torch.as_tensor(x0[0])
 
-    train_X = torch.as_tensor(initial_pts)  # .type(torch.DoubleTensor)
+    train_X = torch.as_tensor(initial_pts).type(torch.DoubleTensor)
     train_Y, _, _, _ = evaluate(train_X.numpy())
     train_Y = norm(train_Y, obj_bound[0], obj_bound[1])
     train_Y = torch.as_tensor(train_Y)
