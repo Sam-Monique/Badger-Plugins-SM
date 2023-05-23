@@ -1,0 +1,8 @@
+---
+name: gpyopt
+version: "0.1"
+dependencies:
+  - numpy
+  - GPyOpt
+params:
+  max_iter: 100

@@ -1,6 +1,6 @@
 from operator import itemgetter
 import numpy as np
-from .gradient_decent import gradient_descent
+from .gradient.gradient_decent import gradient_descent
 
 def optimize(evaluate, params):
     learn_rate, max_iter, tol, gradient_step = itemgetter(

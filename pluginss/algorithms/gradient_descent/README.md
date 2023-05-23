@@ -1,0 +1,7 @@
+# Usage of Gradient Descent Algorithm with Badger
+
+This algorithm implements a gradient descent algorithm. It numerically finds the gradient for each variables by evaluating the function at a step `gradient_step` below the current value of the variable. Note that the gradient for each variable is calculated by taking the step from the previous function evaluation, although this a slighlty worse approximation of the gradient, it allows for the none of the variable to have to be increased.  Using the gradient and the `learn_rate`, the algorithm decides the next value for the varible. Once the number of interations reaches `max_iter`, or the `gradient*learn_rate` is less than the tolerance, `tol`, the routine is haulted. 
+
+## Usage with SECAR
+
+The reasoning behind using this algorithm to optimize the beam optics on SECAR is the reduce the number of times a magnet has to be cycled or to eliminate cycling a magnet completely. Assuming a convex shape of Steering by a combinations of quads as a function of any dipole, we can use this algorithm to minimize the steering with any combinations of dipoles. This should save time in the optimization of SECAR's beam optics, as using any Gaussian Process would require a magnet to be cycled multiple times during a single optimization routine. Although this may slightly increase the amount of function evalutations, which also take a fair amount of time, the overall time it takes to run a routine should decrease by a considerable amount. 
