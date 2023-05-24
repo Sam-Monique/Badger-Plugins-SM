@@ -1,43 +1,54 @@
 from badger import environment
 from badger.interface import Interface
+import yaml
 
 class Environment(environment.Environment):
     name = 'SECAR_LIN_COMB'
 
     vranges = {
-        'N':[-10,10]
+        'm1':[-1,1],
+        'm2':[-1,1],
 
     }
 
     def __init__(self, interface: Interface, params):
         super().__init__(interface, params)
-        B3_init = 60.0
-        B4_init = 60.0
-        self.interface.set_value('SCR_BTS35:PSD_D1547:I_CSET',B3_init)
-        self.interface.set_value('SCR_BTS35:PSD_D1557:I_CSET',B4_init)
-        self.B3_init = B3_init
-        self.B4_init = B4_init
-        # or 
-        self.B3_init = self.interface.get_value('SCR_BTS35:PSD_D1547:I_CSET')
-        self.B4_init = self.interface.get_value('SCR_BTS35:PSD_D1557:I_CSET')
 
-    
+        self.interface.pvs = {
+        'q1':'SCR_BTS35:PSQ_D1475:I_CSET',
+        'q2':'SCR_BTS35:PSQ_D1479:I_CSET',
+        'q3':'SCR_BTS35:PSQ_D1525:I_CSET',
+        'q4':'SCR_BTS35:PSQ_D1532:I_CSET',
+        'q5':'SCR_BTS35:PSQ_D1538:I_CSET',
+        'q6':'SCR_BTS35:PSQ_D1572:I_CSET',
+        'q7':'SCR_BTS35:PSQ_D1578:I_CSET',
+        'q8':'SCR_BTS35:PSQ_D1648:I_CSET',
+        'q9':'SCR_BTS35:PSQ_D1655:I_CSET',
+        'q10':'SCR_BTS35:PSQ_D1692:I_CSET',
+        'q11':'SCR_BTS35:PSQ_D1701:I_CSET',
+        'q12':'SCR_BTS35:PSQ_D1787:I_CSET',
+        'q13':'SCR_BTS35:PSQ_D1793:I_CSET',
+        'q14':'SCR_BTS35:PSQ_D1842:I_CSET',
+        'q15':'SCR_BTS35:PSQ_D1850:I_CSET',
+
+        }
         
         self.variables = {
-            'N':1
+            'm1':0,
+            'm2':0,
         }
 
     @staticmethod
     def list_vars():
-        return ['N']
+        return ['m1','m2', 'm3', 'm4']
     
     @staticmethod
     def list_obses():
-        return ['y1']
+        return ['X_BEAM_SPOT_SIZE_FP2','X_BEAM_SPOT_SIZE_FP2','FC_INTENSITY_FP4']
     
     @staticmethod
     def get_default_params():
-        return None
+        return {'PCA',''}
 
     def _get_vrange(self, var):
         return self.vranges[var]
@@ -46,19 +57,28 @@ class Environment(environment.Environment):
         return self.variables[var]
     
     def _set_var(self, var, x):
-      
-        B3_init = self.B4_init
-        B4_init = self.B4_init
+
+        if self.configs == None:
+            with open(self.params['PCA'], "r") as stream:
+                self.configs = yaml.safe_load(stream)
+
+        num = var[-1]
+        pca = f"p{num}"
+
+        PCA = self.configs[pca]
+
+        for quad in PCA.keys():
+            val = PCA[quad]['Q_i'] + x*PCA[quad]['b']
+            self.interface.set_value(quad, val)
         
-        if var == 'N': 
-            m = 1
-            setB3 = B3_init + x
-            setB4 = B4_init + x*m
-            self.interface.set_value('SCR_BTS35:PSD_D1547:I_CSET',setB3)
-            self.interface.set_value('SCR_BTS35:PSD_D1557:I_CSET',setB4)
-            self.variables[var] = x
 
     def _get_obs(self, obs):
-        if obs == 'y1':
-            
-            return
+        
+        if obs == 'X_BEAM_SPOT_SIZE_FP2':
+            return 0
+        elif obs == 'X_BEAM_SPOT_SIZE_FP3':
+            return 0
+
+        elif obs == 'FC_INTENSITY_FP4':
+            return 0
+        

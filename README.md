@@ -78,7 +78,7 @@ Environments are where you set up the optimization problem. This is where you de
 Interfaces allow for easy code reuse when interacting with an external machine when dealing with non-analytical problems with badger. For example, there is an interface for `pyepics`, this makes it extremely simple to set up an environment where you have to set and get pv channels. Interfaces are there so you do not have to rewrite code for every environment, but simply can use the same code again when defining a new problem.
 
 
-## How to Set Up Environments and Interfaces
+## How to Set Up Plugins
 
 
 First off, for any plugin there needs to be a specific file structure. In the directory that is the plugin roots. The file structure would look like this. Where this directory is within the respective plugin type folder.
@@ -96,7 +96,7 @@ Examples of these are within the plugin directory
 
 
 
-
+### Implementing an Algorithm into Badger
 
 
 ### Setting Up and Environment
