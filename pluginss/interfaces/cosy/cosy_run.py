@@ -162,7 +162,11 @@ def get_obs(obs):
 
 	for lines in text:
 		name = lines.split()[0]
-		num = float(lines.split()[1])
+		try: 
+			num = float(lines.split()[1])
+		except ValueError:
+			num = 0
+			print(f"ValueError for Obs {name}, set value to 0 and continuing..")
 		outputs[name] = num
 	val = outputs[obs]
 	return val

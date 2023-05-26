@@ -5,15 +5,18 @@ from pymoo.algorithms.moo.nsga2 import NSGA2
 import numpy as np
 
 def optimize(evaluate, params):
-    # learn_rate, max_iter, tol, gradient_step = itemgetter(
-    #     'learn_rate', 'max_iter', 'tol', 'gradient_step')(params)
+    pop_size, n_gen, n_obs = itemgetter(
+         'pop_size', 'n_gen', 'n_obs')(params)
     
     _, _, _, x0 = evaluate(None)
    
-    y, _, _, _ = evaluate(x0)
+    if n_obs == None:
+
+        y, _, _, _ = evaluate(x0)
+        n_obs = len(y[0])
 
     D_x = len(x0[0])
-    D_y = len(y[0])
+    D_y = n_obs
 
     def _evaluate_(x):
         y, _, _, _ = evaluate(np.array(x).reshape(1, -1))
@@ -34,9 +37,9 @@ def optimize(evaluate, params):
 
     problem = ProblemWrapper(n_var = D_x, n_obj = D_y, xl = lb, xu = ub)
 
-    algo = NSGA2(pop_size= 10)
+    algo = NSGA2(pop_size= pop_size)
 
-    stop_crit = ('n_gen', 10)
+    stop_crit = ('n_gen', n_gen)
 
     results = minimize(problem= problem, algorithm= algo, termination= stop_crit)
 
