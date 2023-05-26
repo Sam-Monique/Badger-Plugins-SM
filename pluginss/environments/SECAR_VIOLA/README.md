@@ -97,6 +97,8 @@ Although defined as an objective, this value is just the x centroid of the beam 
 
 ## Quad Configuration File Instructions
 
+# This is subject to change as I don't know what exactly it will be
+
 The file needs to have the extension `.yaml` and the path to the file needs to be specified as the `quad_config` environment parameter. An example of what this would look like
 ```
 q3:

@@ -22,6 +22,7 @@ def optimize(evaluate, params):
         dict['name'] = f"var_{i+1}"
         dict['type'] = 'continuous'
         dict['domain'] = (0,1)
+        bound.append(dict)
 
     opt = BayesianOptimization(_evaluate, domain = bound)
 

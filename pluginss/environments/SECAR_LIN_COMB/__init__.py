@@ -8,6 +8,8 @@ class Environment(environment.Environment):
     vranges = {
         'm1':[-1,1],
         'm2':[-1,1],
+        'm3':[-1,1],
+        'm4':[-1,1],
 
     }
 
@@ -32,10 +34,13 @@ class Environment(environment.Environment):
         'q15':'SCR_BTS35:PSQ_D1850:I_CSET',
 
         }
-        
+        self.configs = None
+
         self.variables = {
-            'm1':0,
-            'm2':0,
+            'm1': 0,
+            'm2': 0,
+            'm3': 0,
+            'm4': 0,
         }
 
     @staticmethod
@@ -48,7 +53,7 @@ class Environment(environment.Environment):
     
     @staticmethod
     def get_default_params():
-        return {'PCA',''}
+        return {'PCA_CONFIGS':''}
 
     def _get_vrange(self, var):
         return self.vranges[var]
@@ -70,15 +75,18 @@ class Environment(environment.Environment):
         for quad in PCA.keys():
             val = PCA[quad]['Q_i'] + x*PCA[quad]['b']
             self.interface.set_value(quad, val)
+
+        self.variables[var] = x
         
 
     def _get_obs(self, obs):
         
         if obs == 'X_BEAM_SPOT_SIZE_FP2':
             return 0
+        
         elif obs == 'X_BEAM_SPOT_SIZE_FP3':
             return 0
-
+        
         elif obs == 'FC_INTENSITY_FP4':
             return 0
         

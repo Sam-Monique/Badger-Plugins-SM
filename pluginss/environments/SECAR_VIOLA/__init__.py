@@ -86,6 +86,8 @@ class Environment(environment.Environment):
             current = self.variable[var]
         except KeyError:
             current = x
+            wait_time = CycleMagnet(var)
+            time.sleep(wait_time)
 
         if x > current:
             wait_time = CycleMagnet(var)

@@ -32,7 +32,7 @@ class Environment(environment.Environment):
     
     @staticmethod
     def get_default_params():
-        return {'config':'configs.yaml'}
+        return {}
 
     def _get_vrange(self, var):
         return self.vranges[var]
@@ -60,4 +60,5 @@ class Environment(environment.Environment):
 
         elif obs == 'y4':
             return x3**2
+        
 

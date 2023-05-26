@@ -76,6 +76,8 @@ def get_BO_point(x, f, bounds, precision=None, beta=1.0):
 
     # do UCB acquisition
     logging.debug('optimizing acquisition function')
+
+
     UCB = botorch.acquisition.UpperConfidenceBound(gp, beta=beta, maximize=False)
 
     candidate, _ = botorch.optim.optimize_acqf(
