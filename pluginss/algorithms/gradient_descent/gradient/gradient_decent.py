@@ -39,11 +39,18 @@ import numpy as np
 #     print(f" Optimization Complete\n Current Function Evaluation: {y[0]}\n Functional Evaluations: {function_evals}\n Iterations: {iterations}")
 def gradient_descent(start,f,  gradient, initial_step, max_iter, tol=0.01):
 
+    x_list = []
+    y_list = []
     x = np.array(start)
 
     y = f(x)
+
+    x_list.append(x)
+    y_list.append(y)
+    
     D = len(x)
     diff = np.zeros(D)
+    learn_rates = np.zeros(D)
 
     function_evals = 1
 
@@ -70,8 +77,12 @@ def gradient_descent(start,f,  gradient, initial_step, max_iter, tol=0.01):
         x +=  diff
 
         y = f(x)
-
+        x_list.append(x)
+        y_list.append(y)
+        
         function_evals += 1
         iterations += 1
 
     print(f" Optimization Complete\n Current Function Evaluation: {y[0]}\n Functional Evaluations: {function_evals}\n Iterations: {iterations}")
+
+    return x_list, y_list

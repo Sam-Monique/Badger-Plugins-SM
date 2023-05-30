@@ -5,7 +5,7 @@ from .gradient.gradient_decent import gradient_descent
 def optimize(evaluate, params):
     learn_rate, max_iter, tol, gradient_step = itemgetter(
         'learn_rate', 'max_iter', 'tol', 'gradient_step')(params)
-    
+    print(learn_rate, max_iter, tol, gradient_step)
     _, _, _, x0 = evaluate(None)
 
     def _evaluate(x):
@@ -24,7 +24,7 @@ def optimize(evaluate, params):
         
         return val, y_step
 
-    gradient_descent(x_initial,_evaluate, gradient, learn_rate, max_iter, tol=tol )
-
+    results = gradient_descent(x_initial,_evaluate, gradient, learn_rate, max_iter, tol=tol )
+    return results
 
             
