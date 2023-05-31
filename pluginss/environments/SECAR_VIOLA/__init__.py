@@ -57,6 +57,9 @@ class Environment(environment.Environment):
         self.intial_transmission = self.params['optional_transmission']
 
 
+        self.times = []
+
+
 
     @staticmethod
     def list_vars():
@@ -86,17 +89,21 @@ class Environment(environment.Environment):
             current = self.variable[var]
         except KeyError:
             current = x
-            wait_time = CycleMagnet(var)
-            time.sleep(wait_time)
+            # wait_time = CycleMagnet(var)
+            # time.sleep(wait_time)
 
         if x > current:
             wait_time = CycleMagnet(var)
-            time.sleep(wait_time)
+            self.times.append(wait_time)
 
         self.variables[var] = x
         self.interface.set_value(var,x)
 
     def _get_obs(self, obs):
+
+        if len(self.times) > 0:
+            time.sleep(np.max(self.times))
+            self.times = []
         
         if obs == 'STEERING':
             val = self.steer()

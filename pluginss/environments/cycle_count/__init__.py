@@ -1,3 +1,4 @@
+from typing import List
 import numpy as np
 from badger import environment
 from badger.interface import Interface
@@ -17,6 +18,10 @@ class Environment(environment.Environment):
             'x2': 2
         }
         self.cycle = 0
+
+        self.
+
+
         
 
     @staticmethod
@@ -43,6 +48,17 @@ class Environment(environment.Environment):
             self.cycle += 1
         print(f"The Magnet has been cycled {self.cycle} times")
         self.variables[var] = x
+
+    # def set_vars(self, vars: List[str], values: list):
+
+    #     times = []
+    #     for var, val in zip(vars, values):
+    #         if val > self.variables[var]:
+    #             self.cycle += 1
+    #         print(f"The Magnet has been cycled {self.cycle} times")
+    #         self.variables[var] = val
+
+
     
     def _get_obs(self, obs):
         x1 = self.variables['x1']

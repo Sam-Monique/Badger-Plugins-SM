@@ -1,0 +1,7 @@
+---
+name: SECAR_routine
+version: "0.1"
+dependencies:
+  - badger-opt
+interface:
+  - epics

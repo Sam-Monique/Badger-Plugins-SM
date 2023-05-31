@@ -1,6 +1,8 @@
 from badger import environment
 from badger.interface import Interface
 import yaml
+import time 
+import numpy as np
 
 class Environment(environment.Environment):
     name = 'SECAR_LIN_COMB'
@@ -82,11 +84,20 @@ class Environment(environment.Environment):
     def _get_obs(self, obs):
         
         if obs == 'X_BEAM_SPOT_SIZE_FP2':
-            return 0
+            x_centroid, y_centroid, x_rms, y_rms, x_y_col, total_counts = self.image_analysis()
+
+            return x_rms
         
         elif obs == 'X_BEAM_SPOT_SIZE_FP3':
-            return 0
+            x_centroid, y_centroid, x_rms, y_rms, x_y_col, total_counts = self.image_analysis()
+
+            return x_rms
         
         elif obs == 'FC_INTENSITY_FP4':
             return 0
         
+    def image_analysis(self):
+        '''Read in Viewer Image Info From Text File'''
+        time.sleep(15)  # consider changing this delay based on how long it actually takes, better to slighlty overestimate
+        array_info = np.loadtxt('/user/e20008/sam/badger_viola/viola.txt')
+        return array_info
