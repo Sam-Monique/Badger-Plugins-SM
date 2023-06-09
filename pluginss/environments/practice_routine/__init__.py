@@ -47,7 +47,7 @@ class Environment(environment.Environment):
         x1 = self.variables['x1']
         x2 = self.variables['x2']
         x3 = self.variables['x3']
-
+        print(obs)
         if obs == 'y1':
             return ((x1)**2+(x2)**2)**(1/2)
 

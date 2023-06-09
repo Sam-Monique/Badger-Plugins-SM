@@ -1,0 +1,9 @@
+---
+name: SECAR_B3_B4_MATCH
+version: "0.1"
+dependencies:
+  - badger-opt
+  - time
+  - setup.py
+interface:
+  - epics

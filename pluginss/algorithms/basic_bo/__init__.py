@@ -1,7 +1,8 @@
 import numpy as np
 from operator import itemgetter
 from bayes_opt import BayesianOptimization
-
+from bayes_opt import UtilityFunction
+from bayes_opt import Events
 
 def optimize(evaluate, params):
     start_from_current, random_state, init_points, n_iter = itemgetter(
@@ -15,6 +16,7 @@ def optimize(evaluate, params):
         X = np.array(var_list).reshape(1, -1)
         Y, _, _, _ = evaluate(X)
 
+
         # BO assume a maximize problem
         return -Y[0,0]
 
@@ -23,7 +25,7 @@ def optimize(evaluate, params):
     for i in range(D):
         pbounds[f'v{i}'] = (0, 1)
         
-    optimizer = BayesianOptimization(
+    opt = BayesianOptimization(
         f=_evaluate,
         pbounds=pbounds,
         random_state=random_state,
@@ -33,10 +35,12 @@ def optimize(evaluate, params):
 
     _init_points = init_points
     if start_from_current:
-        optimizer.probe(params=x0[0], lazy=True)
+        opt.probe(params=x0[0], lazy=True)
         _init_points -= 1
-
-    optimizer.maximize(
+    
+    acq = UtilityFunction(kind= 'ucb')
+    opt.maximize(
         init_points=_init_points,
         n_iter=n_iter,
+        acquisition_function= acq
     )

@@ -9,6 +9,7 @@ params:
   num_init: 3
   num_iter: 40
   beta: 1.0
+  accept_val: null
   obj_bound:
     - 0
     - 1

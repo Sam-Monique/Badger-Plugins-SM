@@ -7,8 +7,8 @@ import logging
 
 
 def optimize(evaluate, params):
-    start_from_current, num_init, num_iter, beta, obj_bound = itemgetter(
-        'start_from_current', 'num_init', 'num_iter', 'beta', 'obj_bound')(params)
+    start_from_current, num_init, num_iter, beta, accept_val, obj_bound = itemgetter(
+        'start_from_current', 'num_init', 'num_iter', 'beta','accept_val', 'obj_bound')(params)
 
     _, _, _, x0 = evaluate(None)
     num_controls = x0.shape[1]
@@ -24,9 +24,19 @@ def optimize(evaluate, params):
             np.random.uniform(bounds[0, i], bounds[1, i], (num_init,)))
     if start_from_current:
         initial_pts[0] = torch.as_tensor(x0[0])
+    
 
-    train_X = torch.as_tensor(initial_pts).type(torch.DoubleTensor)
-    train_Y, _, _, _ = evaluate(train_X.numpy())
+    train_X = torch.as_tensor(initial_pts).type(torch.DoubleTensor) #this is the changed line 
+
+    initial_train_X = train_X.numpy()
+    initial_train_X = initial_train_X.flatten()
+    initial_train_X.sort()
+    initial_train_X = initial_train_X[::-1]
+    initial_train_X = initial_train_X.reshape(num_init,1)
+
+    train_Y, _, _, _ = evaluate(initial_train_X)
+
+    # train_Y, _, _, _ = evaluate(train_X.numpy())
     train_Y = norm(train_Y, obj_bound[0], obj_bound[1])
     train_Y = torch.as_tensor(train_Y)
 
@@ -36,6 +46,14 @@ def optimize(evaluate, params):
         # to machine x_new
         y_new, _, _, _ = evaluate(x_new.numpy())
         y_new = norm(y_new, obj_bound[0], obj_bound[1])
+
+        try:
+            if y_new[0,0] < accept_val:
+                break
+        except TypeError:
+            print('WHYYY')
+            pass
+
         y_new = torch.as_tensor(y_new)
 
         logging.debug(y_new)

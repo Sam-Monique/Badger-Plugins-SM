@@ -19,7 +19,7 @@ class Environment(environment.Environment):
         }
         self.cycle = 0
 
-        self.
+        self.exit = False
 
 
         
@@ -46,6 +46,7 @@ class Environment(environment.Environment):
 
         if x > self.variables[var]:
             self.cycle += 1
+            # input(f"Press Enter to Continue")
         print(f"The Magnet has been cycled {self.cycle} times")
         self.variables[var] = x
 
@@ -64,9 +65,11 @@ class Environment(environment.Environment):
         x1 = self.variables['x1']
         x2 = self.variables['x2']
 
-
         if obs == 'y1': 
-            return x1**2 - np.sin(x1) + x2**2 + 2*np.sin(x2)
+            val =  x1**2 - np.sin(x1) + x2**2 + 2*np.sin(x2)
+            if val < 6:
+                self.exit = True
+            return x1**2
             # return x1**6 + x1**3 + np.sin(x1) + x2
            
 
