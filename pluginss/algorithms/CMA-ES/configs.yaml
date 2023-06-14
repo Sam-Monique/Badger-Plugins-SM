@@ -1,0 +1,10 @@
+---
+name: CMA-ES
+version: "0.1"
+dependencies:
+  - numpy
+  - cmaes
+params:
+  n_gen: 10
+  pop_size: 5
+

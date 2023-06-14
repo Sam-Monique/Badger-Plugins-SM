@@ -121,7 +121,7 @@ class Environment(environment.Environment):
         
 
     def set_quads(self, quad_names, quad_values):
-        for channel, value in quad_names, quad_values:
+        for channel, value in zip(quad_names, quad_values):
             self.interface.set_value(channel,value)
 
     def image_analysis(self):
@@ -211,7 +211,7 @@ class Environment(environment.Environment):
                 self.intial_transmission = total_counts
 
 
-        quads = quad_df.keys()
+        quads = list(quad_df.keys())
         quad_strengths = quad_df.values
 
         x_positions = []

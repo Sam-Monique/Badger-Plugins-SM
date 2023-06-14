@@ -3,6 +3,7 @@ from badger.interface import Interface
 import numpy as np
 import os
 import pandas as pd
+import yaml
 
 class Environment(environment.Environment):
     name = 'SECAR_COSY'
@@ -30,7 +31,8 @@ class Environment(environment.Environment):
          'B1':[0.5,1.5],
          'B2':[0.5,1.5],
          'Q1_Q2':[-1,1],
-         'Q1_Q2_Q3':[0.5,1.5]
+         'Q1_Q2_Q3':[0.5,1.5],
+         'm1':[-1,1]
      }
 
     def __init__(self, interface: Interface, params):
@@ -71,16 +73,18 @@ class Environment(environment.Environment):
         self.interface.set_temp_file()
         self.variables = {
             'Q1_Q2': 0,
-            'Q1_Q2_Q3':1
+            'Q1_Q2_Q3':1,
+            'm1':0,
         }
+        self.configs = None
         
     @staticmethod
     def list_vars():
-        return ['Q1','Q2','HEX1','Q3','Q4','Q5','HEX1','Q6','Q7','HEX3','OCT1','Q8','Q9','Q10','Q11','Q12','Q13','Q14','Q15','B1','B2','Q1_Q2','Q1_Q2_Q3']
+        return ['Q1','Q2','HEX1','Q3','Q4','Q5','HEX1','Q6','Q7','HEX3','OCT1','Q8','Q9','Q10','Q11','Q12','Q13','Q14','Q15','B1','B2','Q1_Q2','Q1_Q2_Q3','m1']
     
     @staticmethod
     def list_obses():
-        return ['BEAM_SIZE_X_FP1','BEAM_SIZE_Y_FP1','BEAM_SIZE_X_FP2','BEAM_SIZE_Y_FP2','BEAM_SIZE_X_FP3','BEAM_SIZE_Y_FP3','BEAM_SIZE_X_FP4','BEAM_SIZE_Y_FP4','DIS_FP1','B2_B1_RATIO']
+        return ['BEAM_SIZE_X_FP1','BEAM_SIZE_Y_FP1','BEAM_SIZE_X_FP2','BEAM_SIZE_Y_FP2','BEAM_SIZE_X_FP3','BEAM_SIZE_Y_FP3','BEAM_SIZE_X_FP4','BEAM_SIZE_Y_FP4','DIS_FP1','B2_B1_RATIO','STEER', 'TRANSMISSION_DSSD']
     
     @staticmethod
     def get_default_params():
@@ -123,6 +127,21 @@ class Environment(environment.Environment):
             self.interface.set_value('Q2',A[1])
             self.interface.set_value('Q3',A[2])
             self.variables[var] = x
+        else:
+            if self.configs is None:
+                with open('/Users/sam/Documents/GitHub/Badger-Plugins-SM/pluginss/configs.yaml', "r") as stream:
+                    self.configs = yaml.safe_load(stream)
+
+            num = var[-1]
+            pca = f"p{num}"
+
+            PCA = self.configs[pca]
+
+            for quad in PCA.keys():
+                val = PCA[quad]['Q_i'] + x*PCA[quad]['b']
+                self.interface.set_value(quad, val)
+
+            self.variables[var] = x
 
     
     def _get_obs(self, obs):
@@ -163,7 +182,7 @@ class Environment(environment.Environment):
             self.interface.run()
             x = self.interface.get_value('X_DIS')
             y = self.interface.get_value('Y_DIS')
-            val = (x**2 + y**2)**(1/2)
+            val = (x**2 + y**2)
             return val
 
         elif obs == 'B2_B1_RATIO':
@@ -173,25 +192,66 @@ class Environment(environment.Environment):
             return val
         
         elif obs == 'STEER':
-            df = pd.read_csv('pracitce.csv')
-            intials = {}
+            val = self.steer()
+            return val
+        
+            
+    
+        
+        elif obs == 'TRANSMISSION_DSSD':
+            self.interface.run()
+            val = self.interface.get_value('TRANSMISSION_DSSD')
+            return val
+        
 
-            for key in df.keys():
-                intials[key] = self.interface.get_value(key)
+    def set_quads(self, quad_names, quad_values):
+            print(quad_names, quad_values)
+            for channel, value in zip(quad_names, quad_values):
+                self.interface.set_value(channel,value)
 
-            p_i = self.get_obs('DIS_FP1')
+    def steer(self):
 
-            total  = 0
+            if self.configs is None:
+                self.configs = pd.read_csv('/Users/sam/Documents/GitHub/Badger-Plugins-SM/pluginss/pracitce.csv')
 
-            total  = 0
-            for i in range(df.shape[0]):
-                for key in df.keys():
-                    self.interface.set_value(key,df.iloc[i][key])
-                p = self.get_obs('DIS_FP1')
+            quad_df = self.configs
 
-                total += abs(p_i - p)
 
-            for key in df.keys():
-                self.interface.set_value(key,intials[key])
 
-            return total 
+
+
+            quads = list(quad_df.keys())
+            quad_strengths = quad_df.values
+
+            x_positions = []
+            y_positions = []
+
+
+            for quad_values in quad_strengths:
+                self.set_quads(quads, quad_values)
+
+                self.interface.run()
+                x = self.interface.get_value('X_DIS')
+                y = self.interface.get_value('Y_DIS')
+
+
+                x_positions.append(x)
+                y_positions.append(y)
+
+
+
+
+
+            total_steering = 0
+
+
+            for i in range(len(quad_strengths)):
+                for j in range(i+1, len(quad_strengths)):
+
+                    print(i,j)
+                    print(x_positions[i], x_positions[j], y_positions[i], y_positions[j])
+                    print((x_positions[i] - x_positions[j])**2 + (y_positions[i] - y_positions[j])**2)
+                    total_steering += (x_positions[i] - x_positions[j])**2 + (y_positions[i] - y_positions[j])**2
+
+
+            return total_steering

@@ -168,7 +168,36 @@ def get_obs(obs):
 			num = 0
 			print(f"ValueError for Obs {name}, set value to 0 and continuing..")
 		outputs[name] = num
-	val = outputs[obs]
+	try:
+		val = outputs[obs]
+	except KeyError:
+		if obs == 'TRANSMISSION_DSSD':
+			line = open(os.getcwd()+'/rays.txt','r').readlines()
+			line = line[1:82]
+			lines = []
+			for i in line:
+				i.split()
+				for j in range(len(i.split())):
+					lines.append(i.split()[j])
+			out = []
+			for val in lines:
+				out.append(float(val))
+			x = np.array(out)
+
+			line = open(os.getcwd()+'/rays.txt','r').readlines()
+			line = line[83:164]
+			lines = []
+			for i in line:
+				i.split()
+				for j in range(len(i.split())):
+					lines.append(i.split()[j])
+			out = []
+			for val in lines:
+				out.append(float(val))
+			y = np.array(out)
+			val = np.where((x > -0.016) & (y > -0.016) & (x<0.016) & (y<0.016))
+			val = val[0]/numberMC
+		
 	return val
 
 def get_var(var,settings,path, file):

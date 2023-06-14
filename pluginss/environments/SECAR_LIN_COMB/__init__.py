@@ -65,7 +65,7 @@ class Environment(environment.Environment):
     
     def _set_var(self, var, x):
 
-        if self.configs == None:
+        if self.configs != None:
             with open(self.params['PCA'], "r") as stream:
                 self.configs = yaml.safe_load(stream)
 

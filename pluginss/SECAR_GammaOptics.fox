@@ -256,7 +256,7 @@ IF (MISALIGN=1);
 ENDIF;
 
 DL 0.580965/2 ;				                              {DL3-1}
-OPENF 18 'output.txt' 'unknown';
+OPENF 18 'output.txt' 'unknown'; OPENF 19 'rays.txt' 'unknown';
 {WRITE 18 '***FC1485***';}
 {WRITE 18 'Image size X =' RAY(1);}
 {WRITE 6 'Image size X =' RAY(1);}
@@ -359,12 +359,12 @@ WW(1):= VMAX(RAY(1));
 WW(2):= VMIN(RAY(1));
 {WRITE 6 'VMIN_SIZE='&S(WW(2));}
 WV:=(WW(1)-WW(2));
-{WRITE 6 'Image size FP1='&S(WV);} WRITE 18 'BEAM_SIZE_X_FP1'&S(WV); WRITE 18 'X_DIS '&S(WW(1)+WW(2));
+{WRITE 6 'Image size FP1='&S(WV);} WRITE 18 'BEAM_SIZE_X_FP1'&S(WV); WRITE 18 'X_DIS '&S(RE(RAY(1)));
 {WRITE 18 'Image size FP1 X =' RAY(1);}
 
 WW(1):= VMAX(RAY(3));
 WW(2):= VMIN(RAY(3));
-WV:=(WW(1)-WW(2)); WRITE 18 'BEAM_SIZE_Y_FP1'&S(WV);WRITE 18 'Y_DIS '&S(WW(1)+WW(2));
+WV:=(WW(1)-WW(2)); WRITE 18 'BEAM_SIZE_Y_FP1'&S(WV);WRITE 18 'Y_DIS '&S(RE(RAY(3)));
 {WRITE 18 'Image size FP1 Y =' RAY(3);}
 ELSEIF 1=1;
 ENDIF;
@@ -630,15 +630,15 @@ WRITE 18 'Image size Y =' RAY(3);}
 DL 3.1496-2.8194; 										  {from viewer to DSSD}
 
 PS (0.064)/2;											      {DSSD}
-{WRITE 18 '***DSSD***';}
-WW(1):= VMAX(RAY(1));
+{WRITE 18 '***DSSD***';} 
+WW(1):= VMAX(RAY(1)); WRITE 6 'HJI';
 WW(2):= VMIN(RAY(1));
 WV:=(WW(1)-WW(2));WRITE 18 'BEAM_SIZE_X_FP4'&S(WV);
-{WRITE 18 'Image size DSSD X =' RAY(1);}
+WRITE 19 'Image size DSSD X =' RAY(1);
 WW(1):= VMAX(RAY(3));
 WW(2):= VMIN(RAY(3));
 WV:=(WW(1)-WW(2)); WRITE 18 'BEAM_SIZE_Y_FP4'&S(WV);
-{WRITE 18 'Image size DSSD Y =' RAY(3);}
+WRITE 19 'Image size DSSD Y =' RAY(3);
 MRESOL_P1 := ABS(ME(1,7))/(2*XX*ME(1,1));
 ELSEIF 1=1;
 ENDIF;
