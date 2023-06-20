@@ -195,7 +195,7 @@ class Environment(environment.Environment):
 
     def steer(self):
 
-        if self.configs == None:
+        if self.configs is None:
             self.configs = pd.read_csv(self.params['quad_config'])
 
         quad_df = self.configs

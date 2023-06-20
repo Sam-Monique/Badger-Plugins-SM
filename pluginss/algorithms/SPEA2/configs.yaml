@@ -1,0 +1,10 @@
+---
+name: SPEA2
+version: "0.1"
+dependencies:
+  - numpy
+  - pymoo
+params:
+  pop_size: 10
+  n_gen: 10
+  n_obs: null

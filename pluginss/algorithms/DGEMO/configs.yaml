@@ -1,0 +1,10 @@
+---
+name: DGEMO
+version: "0.1"
+dependencies:
+  - numpy
+  - trieste
+params:
+  pop_size: 10
+  n_gen: 10
+  n_obs: null

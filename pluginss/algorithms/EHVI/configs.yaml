@@ -1,0 +1,10 @@
+---
+name: EHVI
+version: "0.1"
+dependencies:
+  - numpy
+  - trieste
+params:
+  num_initial: 20
+  num_samples: 30
+  n_obs: null

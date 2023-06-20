@@ -3,6 +3,7 @@ from badger.interface import Interface
 import yaml
 import time 
 import numpy as np
+from epics import caget, caput
 
 class Environment(environment.Environment):
     name = 'SECAR_LIN_COMB'
@@ -55,7 +56,7 @@ class Environment(environment.Environment):
     
     @staticmethod
     def get_default_params():
-        return {'PCA_CONFIGS':''}
+        return {'PCA_CONFIGS':'', 'downstream': ''}
 
     def _get_vrange(self, var):
         return self.vranges[var]
@@ -65,7 +66,7 @@ class Environment(environment.Environment):
     
     def _set_var(self, var, x):
 
-        if self.configs != None:
+        if self.configs is None:
             with open(self.params['PCA'], "r") as stream:
                 self.configs = yaml.safe_load(stream)
 
@@ -83,9 +84,17 @@ class Environment(environment.Environment):
 
     def _get_obs(self, obs):
         
+        # 'D1515','D1542','D1638','D1688','D1783','D1836','D1879'
         if obs == 'X_BEAM_SPOT_SIZE_FP2':
+            if 'D1638' != self.params['downstream'] and len(self.params['downstream']) > 0:
+                caput()
+                time.sleep(6)
+
             x_centroid, y_centroid, x_rms, y_rms, x_y_col, total_counts = self.image_analysis()
 
+            if 'D1638' != self.params['downstream'] and len(self.params['downstream']) > 0:
+                caput()
+                time.sleep(6)
             return x_rms
         
         elif obs == 'X_BEAM_SPOT_SIZE_FP3':
@@ -94,10 +103,12 @@ class Environment(environment.Environment):
             return x_rms
         
         elif obs == 'FC_INTENSITY_FP4':
+            
             return 0
         
-    def image_analysis(self):
+    def image_analysis(self, viewer):
         '''Read in Viewer Image Info From Text File'''
-        time.sleep(15)  # consider changing this delay based on how long it actually takes, better to slighlty overestimate
-        array_info = np.loadtxt('/user/e20008/sam/badger_viola/viola.txt')
+        time.sleep(5)  # consider changing this delay based on how long it actually takes, better to slighlty overestimate
+        array_info = np.loadtxt('/user/e20008/sam/badger_viola/viola_{viewer}.txt')
         return array_info
+    

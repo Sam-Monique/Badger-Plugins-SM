@@ -11,6 +11,8 @@ def optimize(evaluate, params):
     _, _, _, x0 = evaluate(None)
     D = x0.shape[1]
 
+    
+
     def _evaluate(**kwargs):
         var_list = [kwargs[f'v{i}'] for i in range(D)]
         X = np.array(var_list).reshape(1, -1)
@@ -55,7 +57,7 @@ def optimize(evaluate, params):
     
 
 
-    acq = UtilityFunction(kind= 'ucb')
+    acq = UtilityFunction(kind= 'ei')
 
     # optimizer.maximize(
     #     init_points=_init_points,
