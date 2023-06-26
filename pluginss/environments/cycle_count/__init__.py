@@ -69,7 +69,7 @@ class Environment(environment.Environment):
             val =  x1**2 - np.sin(x1) + x2**2 + 2*np.sin(x2)
             if val < 6:
                 self.exit = True
-            return x1**2
+            return x1**2# + np.random.uniform(-5.0e-5,5.0e-5)
             # return x1**6 + x1**3 + np.sin(x1) + x2
            
 

@@ -1,0 +1,9 @@
+---
+name: B4_STABILITY
+version: "0.1"
+dependencies:
+  - badger-opt
+  - time
+  - setup.py
+interface:
+  - epics

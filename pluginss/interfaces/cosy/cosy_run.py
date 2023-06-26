@@ -136,7 +136,7 @@ def set_vals(line_type,path,file):
 	replace_lines(path+file + '.fox', path +temp,line_num_list,lines)
 
 
-def set_rays(path,file):
+def set_rays(path,file, dx = 0):
 
 	temp =  file + 'TEMP' +  '.fox'
 
@@ -144,7 +144,7 @@ def set_rays(path,file):
 	xT, yT, axT, ayT = targetPS(widthX, widthY, aX, aY)
 	for j in range(numberMC):
 		ddE = np.round(random.uniform(-dE, dE),5)
-		text.append('SR '+ str(xT[j]/1000) +' ' + str(axT[j]/1000) +' ' \
+		text.append('SR '+ str((xT[j]+dx)/1000) +' ' + str(axT[j]/1000) +' ' \
 			+ str(yT[j]/1000) +' ' + str(ayT[j]/1000) + ' 0 ' + str(ddE) + ' 0 0 1;\n')
 
 	add_lines(path+temp,path+ temp, 736, text)

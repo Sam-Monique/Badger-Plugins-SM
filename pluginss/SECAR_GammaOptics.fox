@@ -260,7 +260,7 @@ OPENF 18 'output.txt' 'unknown'; OPENF 19 'rays.txt' 'unknown';
 {WRITE 18 '***FC1485***';}
 {WRITE 18 'Image size X =' RAY(1);}
 {WRITE 6 'Image size X =' RAY(1);}
-{WRITE 18 'Image size Y =' RAY(3);}
+{WRITE 18 'Image size Y =' RAY(3);} WRITE 18 'FC_X_DIS '&S(RE(RAY(1)));WRITE 18 'FC_Y_DIS '&S(RE(RAY(3)));
 DL 0.580965/2 ;				                              {DL3-2}
 
 IF (MISALIGN=1);

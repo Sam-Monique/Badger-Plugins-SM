@@ -59,6 +59,13 @@ class Interface(interface.Interface):
         set_vals(settings,path,file)
         set_rays(path, file)
 
+    def set_beam_offset(self,dx):
+        path = self.path
+        file = self.file
+        settings = self.settings
+        set_vals(settings,path,file)
+        set_rays(path, file, dx=dx)
+
     def run(self):
         path = self.path
         file = self.file

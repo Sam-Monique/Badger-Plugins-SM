@@ -35,27 +35,36 @@ def optimize(evaluate, params):
         allow_duplicate_points= True
     )
 
-    # _init_points = init_points
     D = len(x0[0])
+    # _init_points = init_points
+    if random_state != False:
+        rng = np.random.RandomState(seed = random_state)
+        initial_p = rng.rand(init_points, D) 
+        initial_p = initial_p.flatten()
+        initial_p.sort()
+        initial_p = initial_p[::-1]
+        initial_p = initial_p.reshape(init_points, D)
 
-    rng = np.random.RandomState(seed = random_state)
-    initial_p = rng.rand(init_points, D) 
-    initial_p = initial_p.flatten()
-    initial_p.sort()
-    initial_p = initial_p[::-1]
-    initial_p = initial_p.reshape(init_points, D)
+        # if start_from_current:
+        #     opt.probe(params=x0[0], lazy=True)
+        #     _init_points -= 1
 
-    # if start_from_current:
-    #     opt.probe(params=x0[0], lazy=True)
-    #     _init_points -= 1
+        
+    else:
+        
+        initial_p = np.linspace(0,1,init_points)
+        print(initial_p)
+        initial_p = initial_p[::-1]
+        initial_p = initial_p.reshape(init_points, D)
 
     if start_from_current:
         initial_p[0] = x0[0]
-    
+
+
     for p in initial_p:
         opt.probe(params=p)
     
-
+ 
 
     acq = UtilityFunction(kind= 'ei')
 

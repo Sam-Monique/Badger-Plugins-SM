@@ -32,7 +32,8 @@ class Environment(environment.Environment):
          'B2':[0.5,1.5],
          'Q1_Q2':[-1,1],
          'Q1_Q2_Q3':[0.5,1.5],
-         'm1':[-1,1]
+         'm1':[-1,1],
+         'dx':[-10,10]
      }
 
     def __init__(self, interface: Interface, params):
@@ -75,12 +76,13 @@ class Environment(environment.Environment):
             'Q1_Q2': 0,
             'Q1_Q2_Q3':1,
             'm1':0,
+            'dx':0,
         }
         self.configs = None
         
     @staticmethod
     def list_vars():
-        return ['Q1','Q2','HEX1','Q3','Q4','Q5','HEX1','Q6','Q7','HEX3','OCT1','Q8','Q9','Q10','Q11','Q12','Q13','Q14','Q15','B1','B2','Q1_Q2','Q1_Q2_Q3','m1']
+        return ['Q1','Q2','HEX1','Q3','Q4','Q5','HEX1','Q6','Q7','HEX3','OCT1','Q8','Q9','Q10','Q11','Q12','Q13','Q14','Q15','B1','B2','Q1_Q2','Q1_Q2_Q3','m1', 'dx']
     
     @staticmethod
     def list_obses():
@@ -126,6 +128,9 @@ class Environment(environment.Environment):
             self.interface.set_value('Q1',A[0])
             self.interface.set_value('Q2',A[1])
             self.interface.set_value('Q3',A[2])
+            self.variables[var] = x
+        elif var == 'dx':
+            self.interface.set_beam_offset(dx = x)
             self.variables[var] = x
         else:
             if self.configs is None:
@@ -231,8 +236,8 @@ class Environment(environment.Environment):
                 self.set_quads(quads, quad_values)
 
                 self.interface.run()
-                x = self.interface.get_value('X_DIS')
-                y = self.interface.get_value('Y_DIS')
+                x = self.interface.get_value('FC_X_DIS')
+                y = self.interface.get_value('FC_Y_DIS')
 
 
                 x_positions.append(x)

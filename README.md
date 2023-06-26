@@ -98,6 +98,22 @@ Examples of these are within the plugin directory
 
 ### Implementing an Algorithm into Badger
 
+To build an algorithm plugin in badger, we use the file format above. In the `__init__.py` file, you define a function `optimize()` that has two inputs
+
+`evaluate()`
+
+Inputs: X (a 2-d array) or None. The points that the environment pluggin will be evaluated at. 
+
+Return: Y, E, I, X. Y the observations, E the equality constraints, I the inequality constraints, and X the points evaluated at. If X is None, then Y, E, and I are returned as None and X is the initial/current state of the input variables. 
+
+`params`
+
+The algorithm parameters determined by the configuration files, typically itemgetter is used to unpack these. 
+
+Import the relevant packages for your specific optimization, then write the optimization as you typically would when given a specific problem. Note that the bounds for each of the input variables in badger are normalized, so if the optimization requires inputs for bounds for each variable, make sure that they are set to [0,1]. You can also use `evaluate(None)` to get the initial input variables and dimensionality of the problem. It is also typically useful to create a new function inside the `optimize()` called `_evaluate()` that uses the `evaluate()` function, but defines in a way that the function uses the same input and output types that are required by the packages used to do the optimization. 
+
+A configuration file also needs to be provided, this is where the default hyperparameters can be set, but also having the availiblity to change them through badger when making a new routine. This is mainly used for hyperparameters than may need tweaking, other hyperparameters can just be hardcoded into the `__init__.py` script. 
+
 
 ### Setting Up and Environment
 
