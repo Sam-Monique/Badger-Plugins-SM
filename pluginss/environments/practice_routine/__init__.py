@@ -11,6 +11,8 @@ class Environment(environment.Environment):
         'x1': [-4,1],
         'x2': [0,5],
         'x3':[-2,2],
+        'x4':[-5,5],
+        'x5':[-5,5],
     }
 
     def __init__(self, interface: Interface, params):
@@ -18,13 +20,15 @@ class Environment(environment.Environment):
         self.variables = {
             'x1': 0,
             'x2': 0,
-            'x3':1.5,
+            'x3':2,
+            'x4':0,
+            'x5':0,
         }
         
 
     @staticmethod
     def list_vars():
-        return ['x1','x2','x3']
+        return ['x1','x2','x3','x4','x5']
     
     @staticmethod
     def list_obses():
@@ -47,16 +51,17 @@ class Environment(environment.Environment):
         x1 = self.variables['x1']
         x2 = self.variables['x2']
         x3 = self.variables['x3']
-        print(obs)
+        x4 = self.variables['x4']
+        x5 = self.variables['x5']
         if obs == 'y1':
-            return ((x1)**2+(x2)**2)**(1/2)
+            return -x4**2-x5**2 +5
 
         elif obs == 'y2':
-            return (x1+x2)/2
+            return x4**2+x5**2
 
         elif obs == 'y3':
             
-            return x1 - x3
+            return -(x3**2) + 1
 
         elif obs == 'y4':
             return x3**2

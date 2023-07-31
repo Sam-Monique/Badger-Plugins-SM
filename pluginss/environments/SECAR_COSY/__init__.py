@@ -33,8 +33,9 @@ class Environment(environment.Environment):
          'Q1_Q2':[-1,1],
          'Q1_Q2_Q3':[0.5,1.5],
          'm1':[-1,1],
-         'dx':[-10,10]
-     }
+         'dx':[-10,10],
+         'dy':[-10,10]
+    }
 
     def __init__(self, interface: Interface, params):
         super().__init__(interface, params)
@@ -77,16 +78,17 @@ class Environment(environment.Environment):
             'Q1_Q2_Q3':1,
             'm1':0,
             'dx':0,
+            'dy':0,
         }
         self.configs = None
         
     @staticmethod
     def list_vars():
-        return ['Q1','Q2','HEX1','Q3','Q4','Q5','HEX1','Q6','Q7','HEX3','OCT1','Q8','Q9','Q10','Q11','Q12','Q13','Q14','Q15','B1','B2','Q1_Q2','Q1_Q2_Q3','m1', 'dx']
+        return ['Q1','Q2','HEX1','Q3','Q4','Q5','HEX1','Q6','Q7','HEX3','OCT1','Q8','Q9','Q10','Q11','Q12','Q13','Q14','Q15','B1','B2','Q1_Q2','Q1_Q2_Q3','m1', 'dx','dy']
     
     @staticmethod
     def list_obses():
-        return ['BEAM_SIZE_X_FP1','BEAM_SIZE_Y_FP1','BEAM_SIZE_X_FP2','BEAM_SIZE_Y_FP2','BEAM_SIZE_X_FP3','BEAM_SIZE_Y_FP3','BEAM_SIZE_X_FP4','BEAM_SIZE_Y_FP4','DIS_FP1','B2_B1_RATIO','STEER', 'TRANSMISSION_DSSD']
+        return ['BEAM_SIZE_X_FP1','BEAM_SIZE_Y_FP1','BEAM_SIZE_X_FP2','BEAM_SIZE_Y_FP2','BEAM_SIZE_X_FP3','BEAM_SIZE_Y_FP3','BEAM_SIZE_X_FP4','BEAM_SIZE_Y_FP4','DIS_FP1','B2_B1_RATIO','STEER', 'TRANSMISSION_DSSD', 'FC_X_DIS', 'FC_Y_DIS','TARGET_X','TARGET_Y']
     
     @staticmethod
     def get_default_params():
@@ -129,8 +131,7 @@ class Environment(environment.Environment):
             self.interface.set_value('Q2',A[1])
             self.interface.set_value('Q3',A[2])
             self.variables[var] = x
-        elif var == 'dx':
-            self.interface.set_beam_offset(dx = x)
+        elif var in ['dx','dy']:
             self.variables[var] = x
         else:
             if self.configs is None:
@@ -197,6 +198,10 @@ class Environment(environment.Environment):
             return val
         
         elif obs == 'STEER':
+            dx = self.variables['dx']
+            dy = self.variables['dy']
+            self.interface.set_beam_offset(dx = dx, dy = dy,  pencils = True)
+
             val = self.steer()
             return val
         
@@ -207,6 +212,17 @@ class Environment(environment.Environment):
             self.interface.run()
             val = self.interface.get_value('TRANSMISSION_DSSD')
             return val
+        
+        elif obs == 'FC_X_DIS':
+            return self.interface.get_value(obs)
+        
+        elif obs == 'FC_Y_DIS':
+            return self.interface.get_value(obs)
+        
+        elif obs == 'TARGET_X':
+            return self.interface.get_value(obs)
+        elif obs == 'TARGET_Y':
+            return self.interface.get_value(obs)
         
 
     def set_quads(self, quad_names, quad_values):
@@ -236,8 +252,8 @@ class Environment(environment.Environment):
                 self.set_quads(quads, quad_values)
 
                 self.interface.run()
-                x = self.interface.get_value('FC_X_DIS')
-                y = self.interface.get_value('FC_Y_DIS')
+                x = self.interface.get_value('X_DIS')
+                y = self.interface.get_value('Y_DIS')
 
 
                 x_positions.append(x)

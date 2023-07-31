@@ -38,9 +38,11 @@ def optimize(evaluate, params):
         opt.probe(params=x0[0], lazy=True)
         _init_points -= 1
     
-    acq = UtilityFunction(kind= 'ucb') # ei or poi
+    acq = UtilityFunction(kind= 'ei') # ei or poi
     opt.maximize(
         init_points=_init_points,
         n_iter=n_iter,
         acquisition_function= acq
     )
+
+    

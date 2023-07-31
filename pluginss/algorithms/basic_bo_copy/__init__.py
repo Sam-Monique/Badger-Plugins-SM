@@ -30,14 +30,14 @@ def optimize(evaluate, params):
     opt = BayesianOptimization(
         f=_evaluate,
         pbounds=pbounds,
-        random_state=random_state,
+        random_state=False,
         verbose=0,
         allow_duplicate_points= True
     )
 
     D = len(x0[0])
     # _init_points = init_points
-    if random_state != False:
+    if random_state != False and random_state != 'stratified':
         rng = np.random.RandomState(seed = random_state)
         initial_p = rng.rand(init_points, D) 
         initial_p = initial_p.flatten()
@@ -49,7 +49,15 @@ def optimize(evaluate, params):
         #     opt.probe(params=x0[0], lazy=True)
         #     _init_points -= 1
 
+    elif random_state == 'stratified':
+        def initital(n):
+            points = []
+            for i in range(n):
+                points.append(np.random.uniform(1 - (1/n)*(i+1),1 - (1/n)*(i)))
+            return points
         
+        initial_p = initital(init_points)
+
     else:
         
         initial_p = np.linspace(0,1,init_points)
@@ -66,7 +74,7 @@ def optimize(evaluate, params):
     
  
 
-    acq = UtilityFunction(kind= 'ei')
+    acq = UtilityFunction(kind= 'poi')
 
     # optimizer.maximize(
     #     init_points=_init_points,

@@ -52,7 +52,12 @@ class Environment(environment.Environment):
     
     @staticmethod
     def list_obses():
-        return ['X_BEAM_SPOT_SIZE_FP2','X_BEAM_SPOT_SIZE_FP2','FC_INTENSITY_FP4']
+        return ['D1457_VD_X', 'D1457_VD_Y','D1515_VD_X', 'D1515_VD_Y',
+                'D1542_VD_X', 'D1542_VD_Y','D1638_VD_X', 'D1638_VD_Y',
+                'D1688_VD_X', 'D1688_VD_Y','D1783_VD_X', 'D1783_VD_Y',
+                'D1836_VD_X', 'D1836_VD_Y','D1879_VD_X', 'D1879_VD_Y',
+                'D1485_FC', 'D1542_FC', 'D1568_FC', 'D1638_FC', 'D1798_FC', 'D1879_FC'
+                ]
     
     @staticmethod
     def get_default_params():
@@ -84,27 +89,32 @@ class Environment(environment.Environment):
 
     def _get_obs(self, obs):
         
-        # 'D1515','D1542','D1638','D1688','D1783','D1836','D1879'
-        if obs == 'X_BEAM_SPOT_SIZE_FP2':
-            if 'D1638' != self.params['downstream'] and len(self.params['downstream']) > 0:
-                caput()
-                time.sleep(6)
+        # 'D1457' 'D1515','D1542','D1638','D1688','D1783','D1836','D1879'  Viewers
 
-            x_centroid, y_centroid, x_rms, y_rms, x_y_col, total_counts = self.image_analysis()
-
-            if 'D1638' != self.params['downstream'] and len(self.params['downstream']) > 0:
-                caput()
-                time.sleep(6)
-            return x_rms
+        # Faraday Cups D1448  , D1485, D1542, D1568, D1638, D1798, D1879
         
-        elif obs == 'X_BEAM_SPOT_SIZE_FP3':
-            x_centroid, y_centroid, x_rms, y_rms, x_y_col, total_counts = self.image_analysis()
+        info = obs.split(sep='_')
 
-            return x_rms
+        if obs != self.params['downstream'] and len(self.params['downstream']) > 0:
+            self.put_in(info[0], info[1])
         
-        elif obs == 'FC_INTENSITY_FP4':
-            
-            return 0
+        if info[1] == 'VD':
+            x, y, x_rms, y_rms, xy, counts = self.image_analysis(info[1])
+            if info[2] == 'X':
+                val = x_rms
+            elif info[2] == 'Y':
+                val = y_rms
+
+        elif info[1] == 'FC':
+            val = self.FC(info[1])
+        
+
+        if obs != self.params['downstream'] and len(self.params['downstream']) > 0:
+            self.take_out(info[0], info[1])
+
+        return val
+
+        
         
     def image_analysis(self, viewer):
         '''Read in Viewer Image Info From Text File'''
@@ -112,3 +122,19 @@ class Environment(environment.Environment):
         array_info = np.loadtxt('/user/e20008/sam/badger_viola/viola_{viewer}.txt')
         return array_info
     
+    def put_in(self, element, type):
+        if type == 'VD':
+            caput(f"SCR_BT35:VD_{element}_IN_CMD",1)
+        elif type == 'FC':
+            caput(f"SCR_BT35:DD_{element}:POS_CSET.SELN", 1)
+        time.sleep(6)
+
+    def take_out(self, element, type):
+        if type == 'VD':
+            caput(f"SCR_BT35:VD_{element}_IN_CMD",0)
+        elif type == 'FC':
+            caput(f"SCR_BT35:DD_{element}:POS_CSET.SELN", 0)
+    
+    def FC(self, element):
+        val = caget(f"SCR_BTS35:FC_{element}:AVG_RD")
+        return val

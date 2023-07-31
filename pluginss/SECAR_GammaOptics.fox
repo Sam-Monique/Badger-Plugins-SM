@@ -226,7 +226,7 @@ PROCEDURE RECOIL_BL;
 {***** Section 1 *****}
 IF (TESTFP1=1);                                      {Added by Artemis, to ommit if beam is lost}
 FR 3; {Fringe field flag}                          	{FP0, target}
-
+OPENF 18 'output.txt' 'unknown'; WRITE 18 'TARGET_X '&S(RE(RAY(1)));WRITE 18 'TARGET_Y '&S(RE(RAY(3)));
 DL 0.799906; {z}                                 	{DL1}
 
 IF (MISALIGN=1);
@@ -256,7 +256,7 @@ IF (MISALIGN=1);
 ENDIF;
 
 DL 0.580965/2 ;				                              {DL3-1}
-OPENF 18 'output.txt' 'unknown'; OPENF 19 'rays.txt' 'unknown';
+OPENF 19 'rays.txt' 'unknown';
 {WRITE 18 '***FC1485***';}
 {WRITE 18 'Image size X =' RAY(1);}
 {WRITE 6 'Image size X =' RAY(1);}
@@ -677,7 +677,7 @@ WF1R:=7.0; {define the bending radius in WF1}
 WF2R:=7.0; {define the bending radius in WF2}
 WF2ON:=1; {WF2 - OFF=0, ON=1}
 WF1ON:=1; {WF2 - OFF=0, ON=1}
-MISALIGN:=1; {ACCOUNT =1 or not =0 for the measured misalignment}
+MISALIGN:=0; {ACCOUNT =1 or not =0 for the measured misalignment}
 
 Q1:=-0.39773;
 Q1H:=0.004679;

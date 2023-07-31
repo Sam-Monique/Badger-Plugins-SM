@@ -93,21 +93,31 @@ def targetPS(widthX, widthY, aX, aY):
 
 	for j in range(numberMC):
 		# Sampling within ellipse of possible positions
-		r = widthX * np.sqrt(random.uniform(0, 1))
-		theta = random.uniform(0, 1) * 2 * np.pi
+		rng = np.random.RandomState(seed = j)
+		rand_nums = rng.uniform(0,1, 5)
+		# r = widthX * np.sqrt(random.uniform(0, 1))
+		r = widthX * np.sqrt(rand_nums[0])
+		# theta = random.uniform(0, 1) * 2 * np.pi
+		theta = rand_nums[1] * 2 * np.pi
 		x = xh + r * np.cos(theta)
 		y = yh + widthY/widthX *  r * np.sin(theta)
 		xT.append(x)
 		yT.append(y)
 
 		# Sampling within ellipse of possible angles
-		r = aX * np.sqrt(random.uniform(0, 1))
-		theta = random.uniform(0, 1) * 2 * np.pi
+		# r = aX * np.sqrt(random.uniform(0, 1))
+		r = aX * np.sqrt(rand_nums[2])
+
+		# theta = random.uniform(0, 1) * 2 * np.pi
+		theta = rand_nums[3] * 2 * np.pi
+
 		angleX = r * np.cos(theta)
 		if aX != 0:
 			angleY = aY/aX *  r * np.sin(theta)
 		else:
-			angleY = aY * np.sqrt(random.uniform(0, 1))
+			# angleY = aY * np.sqrt(random.uniform(0, 1))
+			angleY = aY * np.sqrt(rand_nums[4])
+
 		axT.append(angleX)
 		ayT.append(angleY)
 	return (xT, yT, axT, ayT)
@@ -136,7 +146,7 @@ def set_vals(line_type,path,file):
 	replace_lines(path+file + '.fox', path +temp,line_num_list,lines)
 
 
-def set_rays(path,file, dx = 0):
+def set_rays(path,file, dx = 0, dy = 0,  pencil = False):
 
 	temp =  file + 'TEMP' +  '.fox'
 
@@ -144,10 +154,14 @@ def set_rays(path,file, dx = 0):
 	xT, yT, axT, ayT = targetPS(widthX, widthY, aX, aY)
 	for j in range(numberMC):
 		ddE = np.round(random.uniform(-dE, dE),5)
-		text.append('SR '+ str((xT[j]+dx)/1000) +' ' + str(axT[j]/1000) +' ' \
-			+ str(yT[j]/1000) +' ' + str(ayT[j]/1000) + ' 0 ' + str(ddE) + ' 0 0 1;\n')
+		if pencil:
+			text.append('SR '+ str(dx/1000) +' ' + str(0) +' ' \
+			+ str(dy/1000) +' ' + str(0) + ' 0 ' + '0' + ' 0 0 1;\n')
+		else:
+			text.append('SR '+ str((xT[j]+dx)/1000) +' ' + str(axT[j]/1000) +' ' \
+			+ str((yT[j]+dy)/1000) +' ' + str(ayT[j]/1000) + ' 0 ' + '0' + ' 0 0 1;\n')
 
-	add_lines(path+temp,path+ temp, 736, text)
+	add_lines(path+file+'.fox',path+ temp, 736, text)
 
 
 def run(path,file):

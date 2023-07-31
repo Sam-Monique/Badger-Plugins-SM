@@ -9,40 +9,38 @@ class Environment(environment.Environment):
     def __init__(self, interface: Interface, params):
         super().__init__(interface, params)
         self.variables = {
-            'x1':0,
+            'L':0,
+            'W':0
         }
-        self.eek = {
-            'x2':0
-        }
+
     @staticmethod
     def list_vars():
-        return['x1','x2']
+        return['L','W']
     
     @staticmethod
     def list_obses():
-        return['y1']
+        return['A','P']
 
     @staticmethod
     def get_default_params():
-        return {'name':0.0, 'INIT:x1':0}
+        return None
     
     def _get_vrange(self, var):
-        return [0, 1.57]
+        return [0, 5]
 
     def _get_var(self, var):
-        if var in self.variables.keys():
-            return self.variables[var]
-        elif var in self.eek.keys():
-            return self.eek[var]
+        return self.variables[var]
+
         
     def _set_var(self, var, x):
-        if var == "x1":
-            self.variables[var] = x
-        elif var == "x2":
-            self.eek[var] = x
+        self.variables[var] = x
 
     def _get_obs(self, obs):
-        x1 = self.variables['x1']
-        x2 = self.eek['x2']
-        if obs == 'y1':
-            return (np.sin(x1))*(np.exp(-(x1)**2)) + x2
+        L = self.variables['L']
+        W = self.variables['W']
+
+        if obs == 'A':
+            return L*W
+        elif obs == 'P':
+            return 2*L + 2*W
+    

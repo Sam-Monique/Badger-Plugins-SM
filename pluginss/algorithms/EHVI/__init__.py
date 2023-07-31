@@ -1,8 +1,6 @@
 from operator import itemgetter
 import numpy as np
-
 import math
-
 import gpflow
 import numpy as np
 import tensorflow as tf

@@ -1,0 +1,14 @@
+---
+name: basic_bo_new
+version: "0.1"
+dependencies:
+  - numpy
+  - bayesian-optimization
+params:
+  start_from_current: False
+  init_points: 5
+  n_iter: 40
+  random_state: 1
+  accept_val: null
+  acq_func: ucb
+  n_constraints: 0

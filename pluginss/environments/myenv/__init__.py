@@ -50,7 +50,7 @@ class Environment(environment.Environment):
             n = self.params['num_raw']
             signal = self._get_obs('norm') + sigma_n * np.random.randn(n)
 
-            return signal.tolist()
+            return signal.flatten()[0]
 
     def get_system_states(self):
         return {
